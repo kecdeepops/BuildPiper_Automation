@@ -5,7 +5,7 @@ dotenv.config({
 });
 
 export const config = {
-    baseUrl: process.env.BASEURL || '',
+    baseUrl: process.env.BASE_URL || '',
     username: process.env.APP_USERNAME || '',
-    password: process.env.APP_PASSWORD || ''
+    password: process.env.APP_PASSWORD || '',
 };

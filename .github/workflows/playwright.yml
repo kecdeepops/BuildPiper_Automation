@@ -38,13 +38,13 @@ jobs:
 
       - name: Create QA environment file
         env:
-          BASEURL: ${{ secrets.BASEURL }}
+          BASEURL: ${{ secrets.BASE_URL }}
           API_BASE_URL: ${{ secrets.API_BASE_URL }}
           APP_USERNAME: ${{ secrets.APP_USERNAME }}
           APP_PASSWORD: ${{ secrets.APP_PASSWORD }}
         run: |
           {
-            echo "BASEURL=$BASEURL"
+            echo "BASEURL=$BASE_URL"
             echo "API_BASE_URL=$API_BASE_URL"
             echo "APP_USERNAME=$APP_USERNAME"
             echo "APP_PASSWORD=$APP_PASSWORD"
