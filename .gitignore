@@ -8,3 +8,5 @@ node_modules/
 .env
 .env.*
 !.env.example
+# Kubernetes credentials - never commit
+test-data/kubeconfig/

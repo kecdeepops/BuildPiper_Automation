@@ -1,5 +1,5 @@
 import { Page } from '@playwright/test';
-
+import { ClusterCreationPage } from './ClusterCreationPage';
 import { LoginPage } from './LoginPage';
 import { ClusterDashboardPage } from './ClusterDashboardPage';
 import { ClusterWorkflow } from '../workflows/infrastructure/ClusterWorkflow';
@@ -11,7 +11,7 @@ export class PageManager {
     private _loginPage?: LoginPage;
     private _clusterDashboardPage?: ClusterDashboardPage;
     private _clusterWorkflow?: ClusterWorkflow;
-
+private _clusterCreationPage?: ClusterCreationPage;
     constructor(page: Page) {
         this.page = page;
     }
@@ -35,15 +35,25 @@ export class PageManager {
         return this._clusterDashboardPage;
     }
 
-    get clusterWorkflow(): ClusterWorkflow {
+  get clusterWorkflow(): ClusterWorkflow {
 
-        if (!this._clusterWorkflow) {
-            this._clusterWorkflow =
-                new ClusterWorkflow(
-                    this.clusterDashboardPage
-                );
-        }
-
-        return this._clusterWorkflow;
+    if (!this._clusterWorkflow) {
+        this._clusterWorkflow =
+            new ClusterWorkflow(
+                this.clusterDashboardPage,
+                this.clusterCreationPage
+            );
     }
+
+    return this._clusterWorkflow;
+}
+    get clusterCreationPage(): ClusterCreationPage {
+
+    if (!this._clusterCreationPage) {
+        this._clusterCreationPage =
+            new ClusterCreationPage(this.page);
+    }
+
+    return this._clusterCreationPage;
+}
 }

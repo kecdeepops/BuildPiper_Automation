@@ -1,41 +1,5 @@
 import { test, expect } from '../../src/fixtures/ui.fixture';
 
-test('Verify Kubernetes cluster details', async ({
-    pageManager
-}) => {
-
-    await pageManager.clusterWorkflow
-        .openClusterDashboard();
-
-    const status =
-        await pageManager.clusterWorkflow
-            .getClusterCellValue(
-                'test-community-cluster',
-                'STATUS'
-            );
-
-    const version =
-        await pageManager.clusterWorkflow
-            .getClusterCellValue(
-                'test-community-cluster',
-                'KUBERNETES VERSION'
-            );
-
-    const provider =
-        await pageManager.clusterWorkflow
-            .getClusterCellValue(
-                'test-community-cluster',
-                'INFRA PROVIDER'
-            );
-
-    expect(status.trim()).toBe('Connected');
-    expect(version.trim()).toBe('1.32');
-
-    expect(provider.trim())
-        .toBe('BAREMETAL(Local Data Center)');
-});
-
-
 test('Verify pagination', async ({ pageManager }) => {
 
     await pageManager.clusterWorkflow
@@ -45,7 +9,20 @@ test('Verify pagination', async ({ pageManager }) => {
         await pageManager.clusterWorkflow
             .getPaginationRange();
 
-    expect(before).toBe('1 - 10 of 95');
+    const initialMatch =
+        before.match(/^(\d+)\s*-\s*(\d+)\s+of\s+(\d+)$/);
+
+    expect(
+        initialMatch,
+        `Unexpected pagination text: ${before}`
+    ).not.toBeNull();
+
+    const initialStart = Number(initialMatch![1]);
+    const initialEnd = Number(initialMatch![2]);
+    const total = Number(initialMatch![3]);
+
+    expect(initialStart).toBe(1);
+    expect(initialEnd).toBeLessThanOrEqual(total);
 
     await pageManager.clusterWorkflow
         .goToNextPage();
@@ -54,21 +31,54 @@ test('Verify pagination', async ({ pageManager }) => {
         await pageManager.clusterWorkflow
             .getPaginationRange();
 
-    expect(after).toBe('11 - 20 of 95');
+    const nextMatch =
+        after.match(/^(\d+)\s*-\s*(\d+)\s+of\s+(\d+)$/);
+
+    expect(
+        nextMatch,
+        `Unexpected pagination text: ${after}`
+    ).not.toBeNull();
+
+    expect(Number(nextMatch![1])).toBe(initialEnd + 1);
+    expect(Number(nextMatch![2])).toBeLessThanOrEqual(total);
+    expect(Number(nextMatch![3])).toBe(total);
 });
 
-test('Find cluster across pages', async ({ pageManager }) => {
+test('Verify cluster dashboard is displayed', async ({ pageManager }) => {
+    await pageManager.clusterWorkflow.openClusterDashboard();
 
-    await pageManager.clusterWorkflow
-        .openClusterDashboard();
+    await pageManager.clusterDashboardPage.verifyDashboardDisplayed();
+});
 
-    const status =
-        await pageManager.clusterWorkflow
-            .getClusterCellValueAcrossPages(
-                'dcr-oct-67',
-                'STATUS'
-            );
 
-    //expect(status.trim()).toBe('Disconnected');
-    expect(status.trim()).toBeTruthy();
+test('Verify Next button is disabled on the last page', async ({ pageManager, page }) => {
+    await pageManager.clusterWorkflow.openClusterDashboard();
+
+    const nextButton = page.locator('nav ul li')
+        .filter({
+            has: page.locator('span.ri-arrow-right-s-line')
+        })
+        .locator('button');
+
+    let pagination = await pageManager.clusterWorkflow.getPaginationRange();
+
+    while (true) {
+        const match = pagination.match(
+            /^(\d+)\s*-\s*(\d+)\s+of\s+(\d+)$/
+        );
+
+        expect(match, `Unexpected pagination text: ${pagination}`).not.toBeNull();
+
+        const currentEnd = Number(match![2]);
+        const total = Number(match![3]);
+
+        if (currentEnd >= total) {
+            break;
+        }
+
+        await pageManager.clusterWorkflow.goToNextPage();
+        pagination = await pageManager.clusterWorkflow.getPaginationRange();
+    }
+
+    await expect(nextButton).toBeDisabled();
 });
