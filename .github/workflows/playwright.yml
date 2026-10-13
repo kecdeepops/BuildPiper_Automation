@@ -35,16 +35,15 @@ jobs:
 
       - name: Install Playwright Chromium
         run: npx playwright install --with-deps chromium
-
       - name: Create QA environment file
         env:
-          BASEURL: ${{ secrets.BASE_URL }}
+          BASE_URL: ${{ secrets.BASE_URL }}
           API_BASE_URL: ${{ secrets.API_BASE_URL }}
           APP_USERNAME: ${{ secrets.APP_USERNAME }}
           APP_PASSWORD: ${{ secrets.APP_PASSWORD }}
         run: |
           {
-            echo "BASEURL=$BASE_URL"
+            echo "BASE_URL=$BASE_URL"
             echo "API_BASE_URL=$API_BASE_URL"
             echo "APP_USERNAME=$APP_USERNAME"
             echo "APP_PASSWORD=$APP_PASSWORD"
