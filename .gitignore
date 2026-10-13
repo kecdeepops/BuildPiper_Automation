@@ -1,12 +1,21 @@
+# Dependencies
 node_modules/
-/test-results/
-/playwright-report/
-/blob-report/
-/playwright/.cache/
-/playwright/.auth/
 
-.env
-.env.*
+# Playwright reports and test output
+playwright-report/
+test-results/
+
+# Allure reports
+allure-report/
+allure-results/
+
+# Authentication and secrets
+playwright/.auth/
+.env*
 !.env.example
-# Kubernetes credentials - never commit
-test-data/kubeconfig/
+
+# Local editor files
+*.swp
+*.swo
+test-data/kubeconfig/cluster.yaml
+echo 'test-data/kubeconfig/cluster.yaml' >> .gitignore
