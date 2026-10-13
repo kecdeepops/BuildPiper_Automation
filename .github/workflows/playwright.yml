@@ -16,7 +16,7 @@ permissions:
 jobs:
   ui-tests:
     name: Playwright UI Tests
-    runs-on: ubuntu-latest
+    runs-on: runs-on: self-hosted
     environment: Planning
     timeout-minutes: 20
 
