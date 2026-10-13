@@ -1,4 +1,4 @@
-import { Page, Locator } from '@playwright/test';
+import { Page, Locator ,test} from '@playwright/test';
 import { BasePage } from './BasePage';
 
 export class LoginPage extends BasePage {
@@ -18,10 +18,8 @@ export class LoginPage extends BasePage {
             name: 'Login'
         });
     }
-
-    async login(username: string, password: string) {
-        await this.emailInput.fill(username);
-        await this.passwordInput.fill(password);
-        await this.loginButton.click();
-    }
-}
+ async login(username: string, password: string) {
+    await this.emailInput.fill(username);
+    await this.passwordInput.fill(password);
+    await this.loginButton.click();
+}}

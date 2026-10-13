@@ -12,7 +12,17 @@ export default defineConfig({
     retries: process.env.CI ? 2 : 0,
 
 workers: process.env.CI ? 2 : 2,
-    reporter: 'html',
+    reporter: [
+  ['list'],
+  [
+    'allure-playwright',
+    {
+      detail: true,
+      resultsDir: 'allure-results',
+      suiteTitle: false,
+    },
+  ],
+],
 
     use: {
         baseURL: config.baseUrl,

@@ -1,84 +1,115 @@
+
 import { test, expect } from '../../src/fixtures/ui.fixture';
 
 test('Verify pagination', async ({ pageManager }) => {
 
-    await pageManager.clusterWorkflow
-        .openClusterDashboard();
+    let before = '';
+    let after = '';
+    let initialEnd = 0;
+    let total = 0;
 
-    const before =
-        await pageManager.clusterWorkflow
-            .getPaginationRange();
+    await test.step('Open cluster dashboard', async () => {
+        await pageManager.clusterWorkflow.openClusterDashboard();
+    });
 
-    const initialMatch =
-        before.match(/^(\d+)\s*-\s*(\d+)\s+of\s+(\d+)$/);
+    await test.step('Read and validate initial pagination range', async () => {
+        before = await pageManager.clusterWorkflow.getPaginationRange();
 
-    expect(
-        initialMatch,
-        `Unexpected pagination text: ${before}`
-    ).not.toBeNull();
-
-    const initialStart = Number(initialMatch![1]);
-    const initialEnd = Number(initialMatch![2]);
-    const total = Number(initialMatch![3]);
-
-    expect(initialStart).toBe(1);
-    expect(initialEnd).toBeLessThanOrEqual(total);
-
-    await pageManager.clusterWorkflow
-        .goToNextPage();
-
-    const after =
-        await pageManager.clusterWorkflow
-            .getPaginationRange();
-
-    const nextMatch =
-        after.match(/^(\d+)\s*-\s*(\d+)\s+of\s+(\d+)$/);
-
-    expect(
-        nextMatch,
-        `Unexpected pagination text: ${after}`
-    ).not.toBeNull();
-
-    expect(Number(nextMatch![1])).toBe(initialEnd + 1);
-    expect(Number(nextMatch![2])).toBeLessThanOrEqual(total);
-    expect(Number(nextMatch![3])).toBe(total);
-});
-
-test('Verify cluster dashboard is displayed', async ({ pageManager }) => {
-    await pageManager.clusterWorkflow.openClusterDashboard();
-
-    await pageManager.clusterDashboardPage.verifyDashboardDisplayed();
-});
-
-
-test('Verify Next button is disabled on the last page', async ({ pageManager, page }) => {
-    await pageManager.clusterWorkflow.openClusterDashboard();
-
-    const nextButton = page.locator('nav ul li')
-        .filter({
-            has: page.locator('span.ri-arrow-right-s-line')
-        })
-        .locator('button');
-
-    let pagination = await pageManager.clusterWorkflow.getPaginationRange();
-
-    while (true) {
-        const match = pagination.match(
+        const initialMatch = before.match(
             /^(\d+)\s*-\s*(\d+)\s+of\s+(\d+)$/
         );
 
-        expect(match, `Unexpected pagination text: ${pagination}`).not.toBeNull();
+        expect(
+            initialMatch,
+            `Unexpected pagination text: ${before}`
+        ).not.toBeNull();
 
-        const currentEnd = Number(match![2]);
-        const total = Number(match![3]);
+        const initialStart = Number(initialMatch![1]);
+        initialEnd = Number(initialMatch![2]);
+        total = Number(initialMatch![3]);
 
-        if (currentEnd >= total) {
-            break;
-        }
+        expect(initialStart).toBe(1);
+        expect(initialEnd).toBeLessThanOrEqual(total);
+    });
 
+    await test.step('Navigate to the next page', async () => {
         await pageManager.clusterWorkflow.goToNextPage();
-        pagination = await pageManager.clusterWorkflow.getPaginationRange();
-    }
+        after = await pageManager.clusterWorkflow.getPaginationRange();
+    });
 
-    await expect(nextButton).toBeDisabled();
+    await test.step('Validate next page range', async () => {
+        const nextMatch = after.match(
+            /^(\d+)\s*-\s*(\d+)\s+of\s+(\d+)$/
+        );
+
+        expect(
+            nextMatch,
+            `Unexpected pagination text: ${after}`
+        ).not.toBeNull();
+
+        expect(Number(nextMatch![1])).toBe(initialEnd + 1);
+        expect(Number(nextMatch![2])).toBeLessThanOrEqual(total);
+        expect(Number(nextMatch![3])).toBe(total);
+    });
 });
+
+test('Verify cluster dashboard is displayed', async ({ pageManager }) => {
+
+    await test.step('Open cluster dashboard', async () => {
+        await pageManager.clusterWorkflow.openClusterDashboard();
+    });
+
+    await test.step('Verify dashboard is displayed', async () => {
+        await pageManager.clusterDashboardPage.verifyDashboardDisplayed();
+    });
+});
+
+test(
+    'Verify Next button is disabled on the last page',
+    async ({ pageManager, page }) => {
+
+        let pagination = '';
+
+        const nextButton = page.locator('nav ul li')
+            .filter({
+                has: page.locator('span.ri-arrow-right-s-line')
+            })
+            .locator('button');
+
+        await test.step('Open cluster dashboard', async () => {
+            await pageManager.clusterWorkflow.openClusterDashboard();
+        });
+
+        await test.step('Navigate to the last pagination page', async () => {
+            pagination =
+                await pageManager.clusterWorkflow.getPaginationRange();
+
+            while (true) {
+                const match = pagination.match(
+                    /^(\d+)\s*-\s*(\d+)\s+of\s+(\d+)$/
+                );
+
+                expect(
+                    match,
+                    `Unexpected pagination text: ${pagination}`
+                ).not.toBeNull();
+
+                const currentEnd = Number(match![2]);
+                const currentTotal = Number(match![3]);
+
+                if (currentEnd >= currentTotal) {
+                    break;
+                }
+
+                await pageManager.clusterWorkflow.goToNextPage();
+
+                pagination =
+                    await pageManager.clusterWorkflow.getPaginationRange();
+            }
+        });
+
+        await test.step('Verify Next button is disabled', async () => {
+            await expect(nextButton).toBeDisabled();
+        });
+    }
+);
