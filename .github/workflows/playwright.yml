@@ -1,4 +1,3 @@
-
 name: BuildPiper Playwright Tests
 
 on:
@@ -12,6 +11,8 @@ on:
 
 permissions:
   contents: read
+  pages: write
+  id-token: write
 
 jobs:
   ui-tests:
@@ -20,7 +21,7 @@ jobs:
     environment: Planning
     timeout-minutes: 20
 
-    steps:  
+    steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
@@ -35,6 +36,7 @@ jobs:
 
       - name: Install Playwright Chromium
         run: npx playwright install chromium
+
       - name: Create QA environment file
         env:
           BASE_URL: ${{ secrets.BASE_URL }}
@@ -53,7 +55,11 @@ jobs:
         run: npx tsc --noEmit
 
       - name: Run dashboard tests
-        run: npx playwright test tests/ui/clusterDashboard.spec.ts --project=chromium --workers=2
+        run: |
+          npx playwright test \
+            tests/ui/clusterDashboard.spec.ts \
+            --project=chromium \
+            --workers=2
 
       - name: Generate Allure HTML report
         if: always()
@@ -72,3 +78,28 @@ jobs:
           path: allure-report/
           if-no-files-found: warn
           retention-days: 7
+
+      - name: Upload Allure report to GitHub Pages
+        if: always() && hashFiles('allure-report/**') != ''
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: allure-report
+
+  deploy-report:
+    name: Deploy Allure Report
+    needs: ui-tests
+    if: always()
+    runs-on: ubuntu-latest
+
+    permissions:
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
