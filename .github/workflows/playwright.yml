@@ -70,6 +70,7 @@ jobs:
             echo "No Allure results found; skipping report generation."
           fi
 
+      # Downloadable artifact
       - name: Upload Allure HTML report
         if: always()
         uses: actions/upload-artifact@v4
@@ -79,10 +80,17 @@ jobs:
           if-no-files-found: warn
           retention-days: 7
 
+      # Artifact for GitHub Pages
+      - name: Upload Allure report to GitHub Pages
+        if: always()
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: allure-report/
+
   deploy-report:
     name: Deploy Allure Report
     needs: ui-tests
-    if: always()
+    if: always() && needs.ui-tests.result != 'cancelled'
     runs-on: ubuntu-latest
 
     permissions:
