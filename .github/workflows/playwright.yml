@@ -71,14 +71,7 @@ jobs:
           fi
 
       # Downloadable artifact
-      - name: Upload Allure HTML report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: allure-html-report
-          path: allure-report/
-          if-no-files-found: warn
-          retention-days: 7
+      
 
       # Artifact for GitHub Pages
       - name: Upload Allure report to GitHub Pages
