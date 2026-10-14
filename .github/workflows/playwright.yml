@@ -79,12 +79,6 @@ jobs:
           if-no-files-found: warn
           retention-days: 7
 
-      - name: Upload Allure report to GitHub Pages
-        if: always() && hashFiles('allure-report/**') != ''
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: allure-report
-
   deploy-report:
     name: Deploy Allure Report
     needs: ui-tests
