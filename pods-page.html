@@ -1,0 +1,1057 @@
+<!DOCTYPE html><html lang="en"><head><style>.initial-loader-container{display:flex;justify-content:center;align-items:center;height:100vh;width:100vw;background-color:#f4f6f8;font-family:sans-serif}.spinner{border:6px solid rgba(0,0,0,.1);width:48px;height:48px;border-radius:50%;border-left-color:#09f;animation:spin 1s linear infinite}@keyframes spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}</style><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Pods Available - BuildPiper</title><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta http-equiv="Content-Security-Policy" content="frame-ancestors 'none';"><meta http-equiv="X-Frame-Options" content="DENY"><link rel="shortcut icon" href="/images/fav-icon.png"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin=""><link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&amp;display=swap" rel="stylesheet"><script src="/runtime-env.js"></script><script defer="defer" src="/static/js/runtime.a1995f7b.js"></script><script defer="defer" src="/static/js/vendors.7fbf5637.js"></script><script defer="defer" src="/static/js/main.1a6d28f8.js"></script><link href="/static/css/vendors.3e970f1d.css" rel="stylesheet"><link href="/static/css/main.54998ad7.css" rel="stylesheet"><style id="_goober"> .go1475592160{height:0;}.go1671063245{height:auto;}.go1888806478{display:flex;flex-wrap:wrap;flex-grow:1;}@media (min-width:600px){.go1888806478{flex-grow:initial;min-width:288px;}}.go167266335{background-color:#313131;font-size:0.875rem;line-height:1.43;letter-spacing:0.01071em;color:#fff;align-items:center;padding:6px 16px;border-radius:4px;box-shadow:0px 3px 5px -1px rgba(0,0,0,0.2),0px 6px 10px 0px rgba(0,0,0,0.14),0px 1px 18px 0px rgba(0,0,0,0.12);}.go3162094071{padding-left:20px;}.go3844575157{background-color:#313131;}.go1725278324{background-color:#43a047;}.go3651055292{background-color:#d32f2f;}.go4215275574{background-color:#ff9800;}.go1930647212{background-color:#2196f3;}.go946087465{display:flex;align-items:center;padding:8px 0;}.go703367398{display:flex;align-items:center;margin-left:auto;padding-left:16px;margin-right:-8px;}.go3963613292{width:100%;position:relative;transform:translateX(0);top:0;right:0;bottom:0;left:0;min-width:288px;}.go1141946668{box-sizing:border-box;display:flex;max-height:100%;position:fixed;z-index:1400;height:auto;width:auto;transition:top 300ms ease 0ms,right 300ms ease 0ms,bottom 300ms ease 0ms,left 300ms ease 0ms,max-width 300ms ease 0ms;pointer-events:none;max-width:calc(100% - 40px);}.go1141946668 .notistack-CollapseWrapper{padding:6px 0px;transition:padding 300ms ease 0ms;}@media (max-width:599.95px){.go1141946668{width:100%;max-width:calc(100% - 32px);}}.go3868796639 .notistack-CollapseWrapper{padding:2px 0px;}.go3118922589{top:14px;flex-direction:column;}.go1453831412{bottom:14px;flex-direction:column-reverse;}.go4027089540{left:20px;}@media (min-width:600px){.go4027089540{align-items:flex-start;}}@media (max-width:599.95px){.go4027089540{left:16px;}}.go2989568495{right:20px;}@media (min-width:600px){.go2989568495{align-items:flex-end;}}@media (max-width:599.95px){.go2989568495{right:16px;}}.go4034260886{left:50%;transform:translateX(-50%);}@media (min-width:600px){.go4034260886{align-items:center;}}</style><style>@keyframes spin { to { transform: rotate(360deg); } }</style><style data-jss="" data-meta="makeStyles">
+.jss97 {
+  flex-grow: 1;
+  margin-top: var(--space-30);
+}
+.jss97.select-value {
+  padding: var(--space-16);
+  background-color: var(--color-white);
+}
+.jss98 {
+  border-right: var(--space-1) solid #eeeeee;
+}
+.jss99 {
+  margin: var(--space-20) var(--space-0) var(--space-20) var(--space-20);
+  display: flex;
+  padding: var(--space-5) var(--space-12-5);
+  align-items: center;
+  border-radius: var(--radius-30) var(--radius-0) var(--radius-0) var(--radius-30);
+  background-color: var(--color-white);
+}
+.jss100 {
+  margin: var(--space-20);
+  display: flex;
+  padding: var(--space-5) var(--space-12-5);
+  max-width: var(--space-160);
+  align-items: center;
+  border-radius: var(--radius-30) var(--radius-30) var(--radius-30) var(--radius-30);
+  background-color: var(--color-white);
+}
+.jss101 {
+  width: var(--space-30);
+  border: var(--space-1) solid var(--color-grey-300);
+  height: var(--space-30);
+  text-align: center;
+  padding-top: var(--space-2);
+  border-radius: var(--radius-full);
+}
+.jss102 {
+  font-size: var(--font-11);
+  font-weight: var(--font-weight-400);
+}
+.jss103 {
+  padding: var(--space-15) var(--space-20);
+  border-top: var(--space-1) solid#dedede;
+  border-left: var(--space-1) solid#dedede;
+  border-right: var(--space-1) solid#dedede;
+  border-radius: var(--radius-8) var(--radius-8) var(--radius-0) var(--radius-0);
+  background-color: var(--color-white);
+}
+.jss104 {
+  color: var(--color-white);
+  width: var(--space-30);
+  height: var(--space-30);
+  display: flex;
+  text-align: center;
+  align-items: center;
+  font-weight: var(--font-weight-800);
+  border-radius: var(--radius-full);
+  justify-content: center;
+  background-color: var(--color-info-700);
+}
+.jss105 {
+  display: flex;
+  align-items: center;
+  border-bottom: var(--space-1) solid #ccc;
+  padding-bottom: var(--space-10);
+}
+.jss106 {
+  color: var(--color-black);
+  font-size: var(--font-16);
+  font-weight: var(--font-weight-300);
+}
+.jss107 {
+  margin: var(--space-10) var(--space-0);
+  padding: var(--space-8) var(--space-0);
+}
+.jss108 {
+  color: var(--color-content-primary);
+  font-size: var(--font-14);
+  font-weight: var(--font-weight-500);
+}
+.jss109 {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.jss110 {
+  color: var(--color-grey-500);
+  font-size: var(--font-10);
+  font-weight: var(--font-weight-400);
+  margin-left: var(--space-5);
+}
+.jss111 {
+  margin: var(--space-10) 0rem;
+}
+.jss112 {
+  color: var(--color-badge-grey-text);
+  font-size: var(--font-12);
+  font-weight: var(--font-weight-400);
+  margin-bottom: var(--space-10);
+}
+.jss113 {
+  color: var(--color-error-500);
+}
+.jss114 .show-selected-value {
+  color: var(--color-badge-grey-text);;
+  width: 100%;
+  border: var(--space-1) solid var(--color-grey-400);
+  cursor: pointer;
+  height: auto;
+  margin: var(--space-0);
+  display: flex;
+  position: relative;
+  font-size: var(--font-12);
+  max-height: var(--space-50);
+  min-height: var(--space-40);
+  align-items: center;
+  font-weight: var(--font-weight-400);
+  line-height: var(--line-height-2);
+  padding-left: var(--space-14);
+  border-radius: var(--radius-4);
+  background-color: var(--color-white);
+}
+.jss114 .select-value {
+  top: var(--space-65);
+  width: 100%;
+  border: var(--space-1) solid var(--color-grey-500);
+  padding: var(--space-3) var(--space-0) var(--space-3) 0;
+  z-index: 1;
+  position: absolute;
+  flex-wrap: wrap;
+  background-color: var(--color-white);
+}
+.jss114 .select-value .item {
+  color: var(--color-badge-grey-text);
+  cursor: pointer;
+  font-size: var(--font-12);
+  transition: 0.1s;
+  padding-left: var(--space-14);
+}
+.jss114 .select-value .item:hover {
+  color: var(--color-white);
+  font-size: var(--font-12);
+  background-color: orange;
+}
+.jss114 .show-selected-value svg {
+  top: var(--space-8);
+  color: var(--color-grey-600);
+  right: var(--space-8);
+  position: absolute;
+  font-size: var(--font-21);
+}
+.jss114 .show-selected-value .selected-values {
+  width: 94%;
+  height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  overflow-y: auto;
+}
+.jss114 .show-selected-value .selected-values .selected-values-design {
+  color: var(--color-white);
+  width: 20;
+  margin: 0 var(--space-6) !important;
+  display: flex;
+  padding: var(--space-0) var(--space-6);
+  align-items: center;
+  margin-right: var(--space-4) !important;
+  border-radius: var(--radius-25);
+  background-color: var(--color-primary-500);
+}
+.jss114 .show-selected-value .selected-values .selected-values-design span {
+  cursor: pointer;
+  margin-left: var(--space-12);
+  white-space: nowrap;
+}
+</style><style data-jss="" data-meta="makeStyles">
+.jss95 .btn-group {
+  display: flex;
+  align-items: center;
+}
+.jss95 .btn-group .btn {
+  margin-right: var(--space-0);
+}
+.jss95 .btn-group .btn:last-child {
+  margin-right: var(--space-0);
+}
+</style><style data-jss="" data-meta="makeStyles">
+</style><style data-jss="" data-meta="makeStyles">
+.jss51 {
+  border-right: var(--space-0)!important;
+}
+.jss51 .simple-menu {
+  width: var(--space-250);
+}
+.jss51 .simple-menu .MuiMenu-list {
+  padding-bottom: var(--space-0)!important;
+}
+.jss51 .simple-menu .MuiListItem-root a:visited {
+  color: var(--color-tertiary-500);
+}
+.jss52 {
+  padding: var(--space-20) var(--space-0);
+  font-size: var(--font-24);
+  text-align: center;
+  font-weight: var(--font-weight-300);
+  line-height: var(--line-height-1-2);
+}
+.jss53 {
+  flex-grow: 1;
+}
+.jss54 {
+  margin-left: 8px;
+}
+.jss55 {
+  right: var(--space-0);
+  width: var(--space-10);
+  bottom: var(--space-30);
+  height: var(--space-10);
+  padding: var(--space-2-5);
+  position: absolute;
+  font-size: var(--font-9);
+  border-radius: var(--radius-full);
+  background-color: var(--color-error-400);
+}
+.jss56 {
+  color:  var(--color-white);
+  font-weight: var(--font-weight-600);
+  background-color: var(--color-grey-600) ;
+}
+.jss57 {
+  width: var(--space-30);
+  height: var(--space-30);
+  display: flex;
+  align-items: center;
+  border-radius: var(--radius-4);
+  justify-content: center;
+  background-color: var(--color-grey-600);
+}
+.jss58 {
+  min-height: 50px!important;
+}
+.jss59 {
+  height: 80%!important;
+}
+.jss60 {
+  color: var(--color-white);
+}
+.jss61 {
+  width: var(--space-30);
+  height: var(--space-30);
+  display: flex;
+  position: relative;
+  font-size: var(--font-12);
+  align-items: center;
+  flexh-srink: 0;
+  font-weight: var(--font-weight-600);
+  line-height: var(--line-height-1);
+  user-select: none;
+  border-radius: var(--radius-4);
+  justify-content: center;
+  background-color: var(--color-tertiary-500);
+}
+.jss61:before {
+  top: calc(var(--space-5) * -1);
+  right: calc(var(--space-5) * -1);
+  width: var(--space-10);
+  height: var(--space-10);
+  content: "";
+  position: absolute;
+  border-radius: var(--radius-5);
+  background-color: var(--color-error-500);
+}
+.jss62 {
+  padding: var(--space-15);
+  text-align: center;
+}
+.jss62 .username {
+  color: var(--color-black);
+  width: var(--space-160);
+  margin: auto;
+  overflow: hidden;
+  font-size: var(--font-16);
+  text-align: center;
+  font-weight: var(--font-weight-400);
+  line-height: var(--line-height-22);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.jss62 .other-details {
+  width: var(--space-250);
+  font-size: var(--font-12);
+}
+.jss62 .text-lite-gray {
+  color: var(--color-grey-500);
+}
+.jss63 {
+  padding: var(--space-8);
+  text-align: center;
+}
+.jss64 {
+  color: var(--color-white);
+  padding: var(--space-10);
+  font-size: var(--font-12);
+  line-height: var(--line-height-1-4);
+  background-color: var(--color-info-800);
+}
+.jss65 {
+  padding: var(--space-25);
+}
+.jss66 {
+  display: flex;
+  border-top: var(--space-1) solid #E6E6E6;
+  margin-top: var(--space-6);
+  align-items: center;
+  justify-content: space-between;
+}
+.jss66 .detail:hover {
+  text-decoration: underline;
+}
+.jss67 {
+  height: var(--space-467);
+  border-radius: var(--radius-8);
+  background-color: var(--color-white);
+}
+.jss67 .dialogHeader {
+  display: flex;
+  padding: var(--space-16);
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--color-grey-000) !important;
+}
+.jss67 .dialogBody {
+  height: var(--space-391) !important;
+  padding: var(--space-24) var(--space-16) var(--space-24) var(--space-16);
+  overflow-y: scroll;
+}
+.jss67 .dialogBody .versionTable {
+  border: var(--space-1) solid var(--color-grey-300);
+  border-radius: var(--radius-6);
+}
+.jss67 .dialogBody .versionTable .tableHeader {
+  display: grid;
+  padding: var(--space-8) var(--space-12) var(--space-8) var(--space-12);
+  border-bottom: var(--space-1) solid #E6E6E6;
+  grid-template-columns: 30% 70%;
+  border-top-left-radius: var(--radius-6);
+  border-top-right-radius: var(--radius-6);
+}
+.jss67 .dialogBody .versionTable .version-row {
+  display: grid;
+  padding: var(--space-16) var(--space-12) var(--space-16) var(--space-12);
+  border-bottom: var(--space-1) solid #CACACA;
+  background-color: var(--color-white);
+  grid-template-columns: 30% 70%;
+  border-bottom-left-radius: var(--radius-6);
+  border-bottom-right-radius: var(--radius-6);
+}
+</style><style data-jss="" data-meta="makeStyles">
+.jss68 {
+  width: 100%;
+  height: var(--space-50);
+  display: flex;
+  padding: var(--space-0) var(--space-20) var(--space-0) var(--space-0);
+  z-index: 999;
+  box-shadow: var(--space-0) var(--space-0) var(--space-6) var(--space-0) rgba(0, 0, 0, 0.13);
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--color-white);
+}
+.jss68 .user-company-details {
+  width: var(--space-353);
+  height: var(--space-49);
+  display: flex;
+  padding: var(--space-0) var(--space-0) var(--space-0) var(--space-3);
+  position: relative;
+  align-items: center;
+  border-radius: var(--radius-8) 60px 60px var(--radius-8);
+  justify-content: space-between;
+  background-color: var(--color-grey-100);
+}
+.jss68 .user-avatar {
+  top: var(--space-0);
+  right: var(--space-0);
+  position: absolute;
+}
+.jss68 .notification {
+  width: var(--space-40);
+  height: var(--space-40);
+  display: flex;
+  align-items: center;
+  margin-left: var(--space-20);
+  border-radius: var(--radius-4);
+  justify-content: center;
+  background-color: var(--color-grey-100);
+}
+.jss68 .user-avatar .MuiAvatar-root {
+  width: var(--space-47);
+  height: var(--space-47);
+}
+.jss68 .user-company-details .user-details {
+  display: flex;
+  align-items: flex-end;
+  padding-right: var(--space-57);
+  flex-direction: column;
+}
+.jss68 .user-company-details .user-details .user-name {
+  color: var(--color-content-primary);
+  font-size: var(--font-14);
+  text-align: left;
+  font-weight: var(--font-weight-600);
+  line-height: var(--line-height-17);
+  letter-spacing: 0em;
+}
+.jss68 .user-company-details .user-details .user-type {
+  color: var(--color-content-primary);
+  font-size: var(--font-12);
+  text-align: left;
+  font-weight: var(--font-weight-300);
+  line-height: var(--line-height-15);
+  letter-spacing: 0em;
+}
+.jss68 .icon-settings #slide {
+  left: calc(var(--space-100) * -1);
+  width: var(--space-100);
+  height: var(--space-100);
+  position: absolute;
+  background: blue;
+  transition: 1s;
+}
+.jss69 {
+  gap: var(--space-6);
+  display: flex;
+  overflow: hidden;
+  font-size: var(--font-12);
+  min-width: 0;
+  align-items: center;
+  flex-shrink: 1;
+  font-weight: var(--font-weight-600);
+  margin-left: var(--space-15);
+}
+.jss70 {
+  gap: var(--space-12);
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+.jss71 {
+  width: var(--space-36);
+  height: var(--space-36);
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  justify-content: center;
+}
+.jss72 {
+  display: flex;
+  align-items: center;
+}
+.jss73 {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+.jss74 {
+  height: var(--space-30);
+  padding-right: var(--space-15);
+}
+.jss75 {
+  line-height: var(--space-0);
+}
+.jss76 {
+  color: var(--color-content-primary);
+  font-size: var(--font-11);
+  line-height: var(--line-height-1);
+  white-space: nowrap;
+}
+.jss76:visited {
+  color: var(--color-content-primary);
+}
+.jss77 {
+  display: flex;
+  align-items: center;
+}
+.jss78 {
+  width: var(--space-135);
+  border: var(--space-2) solid var(--color-grey-100);
+  height: var(--space-38);
+  display: flex;
+  flex-wrap: wrap;
+  background: var(--color-white);
+  align-items: center;
+  border-radius: var(--radius-6);
+  justify-content: center;
+}
+</style><style data-jss="" data-meta="makeStyles">
+.jss1 {
+  top: calc(var(--space-38) * -1);
+  color: var(--color-white);
+  width: var(--space-333);
+  height: var(--space-38);
+  padding: var(--space-9) var(--space-19) var(--space-12) var(--space-19);
+  position: absolute;
+  background: var(--color-grey-500);
+  box-shadow: var(--space-0) calc(var(--space-8) * -1) var(--space-12) var(--space-0) var(--color-overlay-black-26) inset;
+  border-radius: var(--radius-10) var(--radius-10) var(--radius-0) var(--radius-0);
+}
+.jss1 .caption {
+  font-size: var(--font-14);
+  text-align: center;
+  font-weight: var(--font-weight-500);
+  line-height: var(--line-height-17-07);
+}
+.jss2 {
+  width: 100%;
+  background: var(--color-white);
+  box-shadow: var(--space-0) var(--space-8) var(--space-24) var(--space-0) var(--color-overlay-black-07);
+  border-radius: var(--radius-12);
+}
+.jss2 .middle {
+  padding: var(--space-20);
+  border-bottom: var(--space-1) solid #D0D0D0;
+}
+.jss2 .bottom {
+  height: var(--space-72);
+  padding: var(--space-16) var(--space-20) var(--space-16) var(--space-20);
+}
+.jss2 .premium-op {
+  color: var(--color-secondary-400);
+  font-size: var(--font-16);
+  text-align: center;
+  font-weight: var(--font-weight-700);
+  line-height: var(--line-height-19);
+  text-transform: uppercase;
+}
+.jss2 .bottom .con-sales {
+  float: right;
+  width: var(--space-160);
+  border: none;
+  height: var(--space-40);
+  display: flex;
+  background: var(--color-tertiary-500);
+  align-items: center;
+  border-radius: var(--radius-7);
+  justify-content: center;
+}
+.jss2 .bottom .con-text {
+  color: var(--color-white);
+  font-size: var(--font-12);
+  text-align: left;
+  font-weight: var(--font-weight-600);
+  line-height: var(--line-height-14-63);
+  margin-left: var(--space-5);
+  text-transform: uppercase;
+}
+.jss3 {
+  width: var(--space-951);
+  margin: auto;
+  display: flex;
+  overflow: visible;
+  box-shadow: var(--space-0) var(--space-8) var(--space-24) var(--space-0) var(--color-overlay-black-07);
+  align-items: center;
+  border-radius: var(--radius-12);
+  justify-content: center;
+}
+</style><style data-jss="" data-meta="makeStyles">
+.jss21 {
+  top: calc(var(--space-38) * -1);
+  color: var(--color-white);
+  width: var(--space-333);
+  height: var(--space-38);
+  padding: var(--space-9) var(--space-19) var(--space-12) var(--space-19);
+  position: absolute;
+  background: var(--color-grey-500);
+  box-shadow: var(--space-0) calc(var(--space-8) * -1) var(--space-12) var(--space-0) var(--color-overlay-black-26) inset;
+  border-radius: var(--radius-10) var(--radius-10) var(--radius-0) var(--radius-0);
+}
+.jss21 .caption {
+  font-size: var(--font-14);
+  text-align: center;
+  font-weight: var(--font-weight-500);
+  line-height: var(--line-height-17-07);
+}
+.jss22 {
+  width: 100%;
+  background: var(--color-white);
+  box-shadow: var(--space-0) var(--space-8) var(--space-24) var(--space-0) var(--color-overlay-black-07);
+  border-radius: var(--radius-12);
+}
+.jss22 .middle {
+  padding: var(--space-20);
+  border-bottom: var(--space-1) solid #D0D0D0;
+}
+.jss22 .bottom {
+  height: var(--space-72);
+  padding: var(--space-16) var(--space-20) var(--space-16) var(--space-20);
+}
+.jss22 .premium-op {
+  color: var(--color-secondary-400);
+  font-size: var(--font-16);
+  text-align: center;
+  font-weight: var(--font-weight-700);
+  line-height: var(--line-height-19);
+  text-transform: uppercase;
+}
+.jss22 .bottom .con-sales {
+  float: right;
+  width: var(--space-160);
+  border: none;
+  height: var(--space-40);
+  display: flex;
+  background: var(--color-tertiary-500);
+  align-items: center;
+  border-radius: var(--radius-7);
+  justify-content: center;
+}
+.jss22 .bottom .con-text {
+  color: var(--color-white);
+  font-size: var(--font-12);
+  text-align: left;
+  font-weight: var(--font-weight-600);
+  line-height: var(--line-height-14-63);
+  margin-left: var(--space-5);
+  text-transform: uppercase;
+}
+.jss23 {
+  width: var(--space-951);
+  margin: auto;
+  display: flex;
+  overflow: visible;
+  box-shadow: var(--space-0) var(--space-8) var(--space-24) var(--space-0) var(--color-overlay-black-07);
+  align-items: center;
+  border-radius: var(--radius-12);
+  justify-content: center;
+}
+</style><style data-jss="" data-meta="makeStyles">
+.jss34 {
+  margin-left: var(--sidebar-width-collapsed);
+}
+.jss35 {
+  margin-left: calc(var(--sidebar-width-collapsed) + var(--sidebar-secondary-width));
+}
+.jss36 {
+  width: var(--sidebar-width-collapsed);
+}
+.jss37 {
+  display: flex;
+}
+.jss38 {
+  flex-shrink: 0;
+}
+.jss39 {
+  border: none;
+  display: flex;
+  overflow: visible!important;
+  transition: position 0.5s ease-in-out;
+  flex-direction: row!important;
+  background-color: var(--color-primary-700)!important;
+}
+.jss40 {
+  display: flex;
+  background: var(--color-primary-900);
+  transition: width 0.3s ease-in-out;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.jss40 .opacity-1 {
+  opacity: 1;
+}
+.jss40 .opacity-0 {
+  opacity: 0;
+  transition-duration: 0.0s !important;
+}
+.jss40 .head-selector {
+  gap: var(--space-12);
+  display: flex;
+  transition: opacity 0.6s ease-in-out;
+  flex-direction: column;
+}
+.jss40 .chip {
+  display: flex;
+  justify-content: flex-end;
+}
+.jss40 .chip .toggleChip {
+  color: var(--color-white);
+  width: var(--space-23);
+  cursor: pointer;
+  height: var(--space-52);
+  background: var(--color-primary-700);
+  margin-right: calc(var(--space-15) * -1);
+  border-radius: var(--radius-10) var(--radius-0) var(--radius-0) var(--radius-10);
+}
+.jss40 .chip .toggleChip:hover {
+  background: var(--color-tertiary-500);
+}
+.jss40 .head-selector .divider {
+  height: var(--space-1);
+  background: rgba(255, 255, 255, 0.20);
+}
+.jss40 .head-selector .selector {
+  gap: var(--space-8);
+  border: var(--space-1) solid rgba(255, 255, 255, 0.30);
+  cursor: pointer;
+  height: var(--space-36);
+  display: flex;
+  padding: var(--space-8);
+  align-items: center;
+  border-radius: var(--radius-4);
+  background-color: var(--color-grey-900);
+}
+.jss41 {
+  width: 0;
+  overflow: hidden;
+}
+.jss42 {
+  width: var(--sidebar-secondary-width);
+  padding: var(--space-12) var(--space-8) var(--space-16) var(--space-8);
+}
+.jss43 {
+  left: 100%;
+  color: var(--color-white);
+  width: var(--space-23);
+  cursor: pointer;
+  height: var(--space-52);
+  position: absolute;
+  background: var(--color-primary-700);
+  border-radius: var(--radius-10) var(--radius-0) var(--radius-0) var(--radius-10);
+}
+.jss43:hover {
+  background: var(--color-tertiary-500);
+}
+.jss44 {
+  gap: var(--space-12);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  padding: var(--space-12) var(--space-8) var(--space-16) var(--space-8);
+  flex-direction: column;
+}
+.jss44 .top-head {
+  display: flex;
+  align-self: stretch;
+  align-items: center;
+  border-bottom: var(--space-1) solid rgba(0, 0, 0, 0.11);
+  justify-content: space-between;
+}
+.jss44 .divider {
+  height: var(--space-1);
+  background: rgba(0, 0, 0, 0.11);
+}
+.jss44 .search-container {
+  gap: var(--space-10);
+  border: var(--space-1) solid var(--color-badge-grey-bg);
+  height: var(--space-32);
+  display: flex;
+  padding: var(--space-6) var(--space-10);
+  background: var(--color-grey-100);
+  align-items: center;
+  border-radius: var(--radius-6);
+}
+.jss44 .search-container input {
+  border: none;
+  padding: 0;
+  background: transparent;
+}
+.jss44 .search-container input::placeholder {
+  color: var(--color-content-tertiary);
+  font-size: var(--font-12);
+  font-weight: var(--font-weight-400);
+}
+.jss44 .search-container input:focus {
+  border: none !important;
+  outline: none !important;
+}
+.jss45 {
+  min-height: 56px;
+}
+@media (min-width:0px) {
+@media (orientation: landscape) {
+  .jss45 {
+    min-height: 48px;
+  }
+}
+}
+@media (min-width:600px) {
+  .jss45 {
+    min-height: 64px;
+  }
+}
+.jss46 {
+  padding: 24px;
+  flex-grow: 1;
+  background-color: #F4F6F8;
+}
+.jss47 {
+  width: 100%;
+  cursor: pointer;
+  height: var(--space-73);
+  display: flex;
+  padding: var(--space-10) var(--space-8);
+  background: var(--color-primary-700);
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+.jss47 .nav-icon-img {
+  color: var(--color-grey-500);
+}
+.jss47:hover {
+  background: var(--color-primary-900);
+}
+@media screen and (max-width: 1440px) {
+  .jss47 {
+    height: var(--space-73);
+  }
+}
+@media screen and (min-width: 1440px) and (max-width: 1920px) {
+  .jss47 {
+    height: var(--space-77);
+  }
+}
+.jss47:hover .nav-icon {
+  color: var(--color-white) !important;
+}
+.jss47:hover .nav-label {
+  color: var(--color-white) !important;
+}
+.jss48 {
+  background: var(--color-primary-900) !important;
+  border-left: var(--space-4) solid var(--color-tertiary-500);
+}
+.jss48 .nav-icon {
+  color: var(--color-tertiary-500) !important;
+}
+.jss48 .nav-label {
+  color: var(--color-white) !important;
+}
+.jss48:hover {
+  background: var(--color-primary-900) !important;
+}
+.jss48:hover .nav-icon {
+  color: var(--color-tertiary-500) !important;
+}
+.jss49 {
+  gap: var(--space-4);
+  display: flex;
+  align-self: stretch;
+  align-items: flex-start;
+  flex-direction: column;
+}
+.jss49 .opt-label {
+  gap: var(--space-6);
+  color: var(--color-white);
+  display: flex;
+  padding: var(--space-8);
+  align-self: stretch;
+  align-items: center;
+  border-radius: var(--radius-6);
+}
+.jss49 .selected-opt-label {
+  color: var(--color-white) !important;
+  background: var(--color-tertiary-500) !important;
+}
+.jss49 .selected-opt-label:hover {
+  color: var(--color-white) !important;
+  background: var(--color-tertiary-500) !important;
+}
+.jss49 .opt-label:hover {
+  color: var(--color-white);
+  background-color: var(--color-info-900);
+}
+.jss50 {
+  gap: var(--space-4);
+  display: flex;
+  align-self: stretch;
+  align-items: flex-start;
+  flex-direction: column;
+}
+.jss50 .opt-label {
+  gap: var(--space-6);
+  cursor: pointer;
+  height: var(--space-36);
+  display: flex;
+  padding: var(--space-8);
+  align-self: stretch;
+  align-items: center;
+  border-radius: var(--radius-4);
+  justify-content: space-between;
+}
+.jss50 .selected-more-option {
+  color: var(--color-white) !important;
+  background-color: var(--color-tertiary-500);
+}
+.jss50 .selected-more-option:hover {
+  color: var(--color-white) !important;
+  background-color: var(--color-tertiary-500) !important;
+}
+.jss50 .opt-label:hover {
+  background-color: var(--color-grey-100);
+}
+</style><style data-jss="" data-meta="makeStyles">
+.jss79 {
+  color: var(--color-white);
+  display: flex;
+  padding: var(--space-10-5);
+  align-items: center;
+  justify-content: space-between;
+}
+.jss80 {
+  gap: var(--space-8);
+  display: flex;
+  align-items: center;
+  margin-left: var(--space-10);
+  justify-content: center;
+}
+.jss81 {
+  font-size: var(--font-12);
+  font-weight: var(--font-weight-600);
+}
+.jss82 {
+  color: var(--color-black);
+  cursor: pointer;
+  display: flex;
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--font-12);
+  align-items: center;
+  font-weight: var(--font-weight-600);
+}
+.jss83 {
+  padding: var(--space-4);
+}
+</style><style data-jss="" data-meta="makeStyles">
+.jss84 {
+  height: calc(100vh - 70px);
+  padding: var(--space-20);
+  background-color: var(--color-white);
+}
+.jss85 {
+  overflow: hidden;
+  position: relative;
+  background: var(--color-white);
+  min-height: var(--space-500);
+  overflow-x: auto;
+}
+.jss85 .chip-default {
+  width: fit-content;
+}
+.jss85 .table-grid {
+  height: var(--space-432);
+}
+.jss85 .table th {
+  color: var(--color-content-primary);
+  font-size: var(--font-12);
+  font-weight: var(--font-weight-600);
+  border-bottom: var(--space-1) solid #e6e6e6 !important;
+}
+.jss86 {
+  display: flex;
+  padding: var(--space-10) var(--space-15);
+  font-size: var(--font-13);
+  align-items: center;
+  border-radius: var(--radius-8) var(--radius-8) var(--radius-0) var(--radius-0);
+  justify-content: space-between;
+  background-color: var(--color-white);
+}
+.jss86 .input-component {
+  min-width: var(--space-120);
+  margin-bottom: var(--space-0);
+}
+.jss87 {
+  padding: var(--space-20) var(--space-15);
+  background-color: var(--color-grey-000);
+}
+.jss87 .input-component {
+  margin-bottom: var(--space-15);
+}
+.jss87 .with-dropdown {
+  gap: var(--space-10);
+  display: grid;
+  align-items: center;
+  grid-template-columns: auto var(--space-120);
+}
+.jss88 {
+  width: 100%;
+  bottom: var(--space-0);
+  display: flex;
+  padding: var(--space-10) var(--space-15);
+  border-radius: var(--radius-0) var(--radius-0) var(--radius-8) var(--radius-8);
+  justify-content: flex-end;
+  background-color: var(--color-white);
+}
+.jss88 .btn-submit {
+  color: var(--color-white);
+  margin-left: auto;
+  background-color: var(--color-tertiary-400);
+}
+</style><style data-jss="" data-meta="makeStyles">
+.jss6 {
+  top: 0;
+  z-index: 1000;
+  position: sticky;
+  background: var(--color-white);
+}
+</style><style data-jss="" data-meta="makeStyles">
+</style><style data-jss="" data-meta="makeStyles">
+.jss19 {
+  top: var(--space-0);
+  width: 100%;
+  z-index: 10000;
+  position: fixed;
+}
+.jss20 {
+  color: var(--color-error-400);
+  height: var(--space-50);
+  display: flex;
+  padding: var(--space-20);
+  font-size: var(--font-14);
+  background: var(--color-error-300);
+  align-items: center;
+  justify-content: space-between;
+}
+.jss20 .action-buttons-div {
+  width: var(--space-265);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.jss20 .info {
+  color: var(--color-white);
+  font-size: var(--font-16);
+  text-align: left;
+  font-weight: var(--font-weight-600);
+  line-height: var(--line-height-20);
+  margin-left: var(--space-7);
+  letter-spacing: 0em;
+}
+.jss20 .action-buttons-div .env-button {
+  color: var(--color-primary-500);
+  width: var(--space-227);
+  border: var(--space-1) solid var(--color-primary-500);
+  height: var(--space-36);
+  font-size: var(--font-12);
+  text-align: center;
+  font-weight: var(--font-weight-700);
+  line-height: var(--line-height-15);
+  border-radius: var(--radius-6);
+  letter-spacing: 0em;
+}
+</style><style data-jss="" data-meta="makeStyles">
+.jss92 {
+  top: 0;
+  z-index: 1000;
+  position: sticky;
+  background: var(--color-white);
+}
+</style><style data-jss="" data-meta="makeStyles">
+</style><style data-emotion="css" data-s=""></style></head><body style="margin:0"><div id="root"><div class="jss90 jss93"><div class="MuiBox-root css-k008qs"><div class="jss35" style="position: fixed; top: 0px; left: 0px; width: 100%; z-index: 999; transition: margin 0.3s ease-in-out;"></div><div class="MuiDrawer-root MuiDrawer-docked jss38 css-1tu59u4"><div class="MuiPaper-root MuiPaper-elevation MuiPaper-elevation0 MuiDrawer-paper jss39 MuiDrawer-paperAnchorLeft MuiDrawer-paperAnchorDockedLeft css-1lrtu54"><div class="jss36 d-flex f-direction-column" style="z-index: 9990;"><div class="jss47" role="button" tabindex="0" data-testid="home"><img src="/images/BP-new.svg" alt="buildpiper"><span class="font-weight-500 color-white loading nav-label" style="font-size: var(--font-11); margin-top: var(--space-7);">Home</span></div><div style="overflow-y: overlay;"><div class="jss47 jss48" role="button" tabindex="0" data-testid="Infra-Inventory"> <span class="ri-cloud-line font-20 color-white nav-icon"></span><span class="font-11 font-weight-500 color-white loading line-normal nav-label">Infra<br>Inventory</span></div><div class="jss47" role="button" tabindex="0" data-testid="Job-Templates"><span class="ri-suitcase-line font-20 color-white nav-icon"></span><span class="font-11 font-weight-500 color-white loading line-normal nav-label">Job<br>Templates</span></div><div class="jss47" role="button" tabindex="0" data-testid="Step-Catalog"><span class="ri-file-copy-2-line font-20 color-white nav-icon"></span><span class="font-11 font-weight-500 color-white loading line-normal nav-label">Step<br>Catalog</span></div><div class="jss47" role="button" tabindex="0" data-testid="Maturity-Insight"><span class="ri-bar-chart-fill font-20 color-white nav-icon"></span><span class="font-11 font-weight-500 color-white loading line-normal nav-label">Maturity<br>Insight</span></div><div class="jss47" role="button" tabindex="0" data-testid="Manage-Application"> <span class="ri-airplay-line font-20 color-white nav-icon"></span><span class="font-11 font-weight-500 color-white loading line-normal nav-label">Manage<br>Application</span></div><div class="jss47" role="button" tabindex="0" data-testid="Audit-Records"> <span class="ri-bar-chart-fill font-20 color-white nav-icon"></span><span class="font-11 font-weight-500 color-white loading line-normal nav-label">Audit<br>Records</span></div><div class="jss47" role="button" tabindex="0" data-testid="Manage-User"> <span class="ri-user-settings-line font-20 color-white nav-icon"></span><span class="font-11 font-weight-500 color-white loading line-normal nav-label">Manage<br>User</span></div><div class="jss47" role="button" tabindex="0" data-testid="User-Policies"> <span class="ri-user-star-line font-20 color-white nav-icon"></span><span class="font-11 font-weight-500 color-white loading line-normal nav-label">User<br>Policies</span></div><div class="jss47" role="button" tabindex="0" data-testid="Integration"> <span class="ri-settings-3-line font-20 color-white nav-icon"></span><span class="font-11 font-weight-500 color-white loading line-normal nav-label">Integration</span></div><div class="jss47" role="button" tabindex="0" data-testid="Notifications-Centre"> <span class="ri-notification-4-line font-20 color-white nav-icon"></span><span class="font-11 font-weight-500 color-white loading line-normal nav-label">Notifications<br>Centre</span></div><div class="jss47" role="button" tabindex="0" data-testid="Governance-&amp;-Rules"> <span class="ri-shield-check-line font-20 color-white nav-icon"></span><span class="font-11 font-weight-500 color-white loading line-normal nav-label">Governance<br>&amp;&nbsp;Rules</span></div></div><div class="d-flex align-center justify-center" style="position: relative; margin-top: auto; margin-bottom: var(--space-12);"><div class="jss51"><div><div aria-controls="simple-menu" aria-haspopup="true" role="button" tabindex="0" style="display: flex; align-items: center; margin-top: var(--space-12);"><div class="user-company-details"> <div class="user-details"><div class="user-avatar nav-user-avatar"><div class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault avatar-user css-5xo5fs">SA</div> <div class="MuiAvatar-root MuiAvatar-circular avatar-image css-9b2z88"><img alt="user-pic" src="/images/avatar-hover.svg" class="MuiAvatar-img css-1hy9t21"></div></div></div></div></div></div></div></div></div><div class="jss40  text-e jss42" style="z-index: 9990;"><div class="opacity-1 head-selector" style="gap: var(--space-5);"><span class="font-11 font-weight-600 avtar color-nav">Infra Inventory</span><div class="jss49"><div class="opt-label font-11 nowrap cursor-pointer" role="button" tabindex="0" data-testid="nav-sub-option-kubernetes-cluster">Kubernetes Cluster <span class="font-18 ri-arrow-up-s-line d-block ml-auto" role="button" tabindex="0"></span></div></div><div class="selector" role="button" tabindex="0" data-testid="nav-selector-Infra-Inventory"><span class="font-11 font-weight-500 text-white text-ellipsis-110" style="width: 85%;">automation-created_cluster_1792139090831</span><span class="ri-arrow-right-s-line font-weight-500 text-white"></span></div><div class="divider"></div><div class="jss49"><a class="full-width" data-testid="nav-sub-option-Cluster-Overview" href="/cluster/275/detail"><div class="opt-label font-11 nowrap" data-testid="Infra-Inventory-Cluster-Overview">Cluster Overview</div></a><a class="full-width" data-testid="nav-sub-option-Nodes-Availaible" href="/cluster/275/node/list"><div class="opt-label font-11 nowrap" data-testid="Infra-Inventory-Nodes-Availaible">Nodes Availaible</div></a><a class="full-width" data-testid="nav-sub-option-Pods-Availaible" href="/cluster/275/pod/list"><div class="opt-label font-11 selected-opt-label nowrap" data-testid="Infra-Inventory-Pods-Availaible">Pods Availaible</div></a><a class="full-width" data-testid="nav-sub-option-Manage-Namespaces" href="/cluster/275/namespace/list"><div class="opt-label font-11 nowrap" data-testid="Infra-Inventory-Manage-Namespaces">Manage Namespaces</div></a><a class="full-width" data-testid="nav-sub-option-Manage-Ingress" href="/cluster/275/ingress/list"><div class="opt-label font-11 nowrap" data-testid="Infra-Inventory-Manage-Ingress">Manage Ingress</div></a><a class="full-width" data-testid="nav-sub-option-Manage-API-gateway" href="/cluster/275/api_gateway/list"><div class="opt-label font-11 nowrap" data-testid="Infra-Inventory-Manage-API-gateway">Manage API gateway</div></a></div><div class="divider"></div><div class="jss49"><a class="full-width" data-testid="nav-static-option-Virtual-Machines" href="/vm-groups/list"><div class="opt-label font-11 nowrap" data-testid="Infra-Inventory-Virtual-Machines">Virtual Machines</div></a><a class="full-width" data-testid="nav-static-option-Load-Balancer" href="/load-balancer/list"><div class="opt-label font-11 nowrap" data-testid="Infra-Inventory-Load-Balancer">Load Balancer</div></a><a class="full-width" data-testid="nav-static-option-AMI" href="/golden-ami/list"><div class="opt-label font-11 nowrap" data-testid="Infra-Inventory-AMI">AMI</div></a></div></div><div class="chip"><div class="toggleChip d-flex align-center justify-center" role="button" tabindex="0" data-testid="nav-toggle-chip-sub"><span class="ri-arrow-right-s-line" style="transform: rotate(180deg); font-size: var(--font-20);"></span></div></div></div></div></div></div><div class="jss92"><div class="jss68"><div class="jss69"><span class="ri-arrow-right-s-line" style="font-size: var(--font-14);"></span><a class="jss76 " href="/ClusterDashboard">Infra Inventory</a><span class="ri-arrow-right-s-line" style="font-size: var(--font-14); line-height: 1; display: inline-flex; align-items: center;"></span><a class="jss76 " href="/cluster/275/detail">automation-created_cluster_1792139090831</a><span class="ri-arrow-right-s-line" style="font-size: var(--font-14); line-height: 1; display: inline-flex; align-items: center;"></span><a class="jss76 color-inactive-breadcrumb" href="/cluster/275/pod/list">Pods Availaible</a></div><div class="jss70"><div class="jss73"><div class="jss78"><img src="/images/products/gitlab-logo.png" alt="company" style="height: var(--space-18); width: 140px;"></div></div><a class="jss71" href="/bp-olly" target="_blank"><button class="olly-chatbot css-bqazqs" title="" style="padding: var(--space-8); border-width: medium; border-style: none; border-color: currentcolor; border-image: none;"><img src="/images/bp-olly/bp-olly.svg" alt="Olly" style="width: var(--space-20); height: var(--space-20);"></button></a></div></div></div><main><div class="jss84"><div class="MuiGrid-root css-rfnosa"><div class="MuiGrid-root MuiGrid-item MuiGrid-grid-lg-12 css-1wxaqej"><div class="jss95 jss96 d-flex align-center wrapper-page-header space-between mb-24 "><div class="d-flex align-center"><div class="sq-avtar-one d-flex align-center justify-center mr-10" style="width: var(--space-56); height: var(--space-56); border-radius: var(--radius-6); background-color: var(--color-pastel-blue-2);"><img src="/images/header_icons/pods-icon.svg" alt=".."></div><div><div class="font-18 font-weight-600 color-header-new">Pods Available</div></div></div><div class="btn-group"><button class="btn btn-icon-only d-flex align-center justify-center text-center "><span class="ri-refresh-line font-20 color-tertiary" style="font-weight: var(--font-weight-500);"></span><span></span></button></div></div></div><div class="MuiGrid-root css-rfnosa"><div class="MuiGrid-root MuiGrid-item MuiGrid-grid-lg-12 css-1wxaqej" style="margin-bottom: var(--space-32);"><div class="wrapper-for-search css-bx0ep7" style="gap: 0px; margin-right: var(--space-10);"><div class="search-bar css-1icq4tf" style="border-width: medium; border-style: none; border-color: currentcolor; border-image: none;"><div class="d-flex justify-center align-center" style="cursor: pointer;"><span class="ri-search-2-line color-icon-primary"></span></div><div class="css-10xdxlo"><div class="input-component d-flex f-direction-column" style="gap: var(--space-5);"><input class="" name="namespace" placeholder="Namespace Name" data-testid="namespace" value="" style=""></div></div><div class="d-flex align-center" style="justify-content: space-around;"><button class="btn btn-transparent mr-0" color="primary" aria-label="Search"><span class="ri-arrow-down-s-line" style="color: var(--color-grey-400); font-size: var(--font-24); font-weight: var(--font-weight-500);"></span></button><button class="btn btn-transparent  mr-0" color="primary" aria-label="close" style="padding: var(--space-6);"><i class="ri-close-line" style="color: var(--color-grey-500); font-size: var(--font-20); font-weight: var(--font-weight-500);"></i></button></div></div><div></div></div></div></div><div class="MuiGrid-root MuiGrid-item MuiGrid-grid-lg-12 css-1wxaqej"><div class="jss85"><table class="table table-responsive"><thead><tr><th>Pod Name</th><th>Execution Duration</th><th>Status</th><th>Namespace</th><th>Node Name</th><th>Labels</th></tr></thead><tbody><tr><td><a href="/cluster/275/namespace/aws-protected-ingress/pod/public-ingress-controller-7k9t9"><span aria-label="public-ingress-controller-7k9t9" class="">public-ingress-controller-7k9t9</span></a></td><td><span class="font-weight-500 color-tertiary font-weight-500">NA</span></td><td><span class="d-flex align-center"><i class="ri-checkbox-circle-fill" font-size="large" style="color: var(--color-secondary-500);"></i><yellow font-size="large" style="color: var(--color-secondary-500);"></yellow><span class="font-weight-500 color-tertiary font-weight-500">Failed</span></span></td><td><a href="/cluster/275/namespace/aws-protected-ingress/detail">aws-protected-ingress</a></td><td><a href="/cluster/275/node/k8s-master3.prd.bp.opstree.net/detail">k8s-master3.prd.bp.opstree.net</a></td><td><div class="pod-lable" aria-label="app.kubernetes.io/component=controller">app.kubernetes.io/component=controller</div><div class="pod-lable" aria-label="app.kubernetes.io/instance=public-ingress">app.kubernetes.io/instance=public-ingress</div><div role="button" tabindex="0" class="chip-default chip-blue" style="height: fit-content;">+5</div><div class=""></div></td></tr><tr><td><a href="/cluster/275/namespace/aws-protected-ingress/pod/public-ingress-controller-j6pwp"><span aria-label="public-ingress-controller-j6pwp" class="">public-ingress-controller-j6pwp</span></a></td><td><span class="d-flex align-center"><span class="font-weight-500 color-tertiary font-weight-500">8 days ago</span></span></td><td><span class="d-flex align-center"><i class="ri-checkbox-circle-fill" font-size="large" style="color: var(--color-success-400);"></i><span class="font-weight-500 color-tertiary font-weight-500">Running</span></span></td><td><a href="/cluster/275/namespace/aws-protected-ingress/detail">aws-protected-ingress</a></td><td><a href="/cluster/275/node/k8s-worker3.prd.bp.opstree.net/detail">k8s-worker3.prd.bp.opstree.net</a></td><td><div class="pod-lable" aria-label="app.kubernetes.io/component=controller">app.kubernetes.io/component=controller</div><div class="pod-lable" aria-label="app.kubernetes.io/instance=public-ingress">app.kubernetes.io/instance=public-ingress</div><div role="button" tabindex="0" class="chip-default chip-blue" style="height: fit-content;">+5</div><div class=""></div></td></tr><tr><td><a href="/cluster/275/namespace/aws-protected-ingress/pod/public-ingress-controller-w6rgj"><span aria-label="public-ingress-controller-w6rgj" class="">public-ingress-controller-w6rgj</span></a></td><td><span class="d-flex align-center"><span class="font-weight-500 color-tertiary font-weight-500">8 days ago</span></span></td><td><span class="d-flex align-center"><i class="ri-checkbox-circle-fill" font-size="large" style="color: var(--color-success-400);"></i><span class="font-weight-500 color-tertiary font-weight-500">Running</span></span></td><td><a href="/cluster/275/namespace/aws-protected-ingress/detail">aws-protected-ingress</a></td><td><a href="/cluster/275/node/k8s-worker2.prd.bp.opstree.net/detail">k8s-worker2.prd.bp.opstree.net</a></td><td><div class="pod-lable" aria-label="app.kubernetes.io/component=controller">app.kubernetes.io/component=controller</div><div class="pod-lable" aria-label="app.kubernetes.io/instance=public-ingress">app.kubernetes.io/instance=public-ingress</div><div role="button" tabindex="0" class="chip-default chip-blue" style="height: fit-content;">+5</div><div class=""></div></td></tr><tr><td><a href="/cluster/275/namespace/aws-protected-ingress/pod/public-ingress-controller-wgvcp"><span aria-label="public-ingress-controller-wgvcp" class="">public-ingress-controller-wgvcp</span></a></td><td><span class="d-flex align-center"><span class="font-weight-500 color-tertiary font-weight-500">8 days ago</span></span></td><td><span class="d-flex align-center"><i class="ri-checkbox-circle-fill" font-size="large" style="color: var(--color-success-400);"></i><span class="font-weight-500 color-tertiary font-weight-500">Running</span></span></td><td><a href="/cluster/275/namespace/aws-protected-ingress/detail">aws-protected-ingress</a></td><td><a href="/cluster/275/node/k8s-master2.prd.bp.opstree.net/detail">k8s-master2.prd.bp.opstree.net</a></td><td><div class="pod-lable" aria-label="app.kubernetes.io/component=controller">app.kubernetes.io/component=controller</div><div class="pod-lable" aria-label="app.kubernetes.io/instance=public-ingress">app.kubernetes.io/instance=public-ingress</div><div role="button" tabindex="0" class="chip-default chip-blue" style="height: fit-content;">+5</div><div class=""></div></td></tr><tr><td><a href="/cluster/275/namespace/aws-protected-ingress/pod/public-ingress-controller-x7m8z"><span aria-label="public-ingress-controller-x7m8z" class="">public-ingress-controller-x7m8z</span></a></td><td><span class="d-flex align-center"><span class="font-weight-500 color-tertiary font-weight-500">8 days ago</span></span></td><td><span class="d-flex align-center"><i class="ri-checkbox-circle-fill" font-size="large" style="color: var(--color-success-400);"></i><span class="font-weight-500 color-tertiary font-weight-500">Running</span></span></td><td><a href="/cluster/275/namespace/aws-protected-ingress/detail">aws-protected-ingress</a></td><td><a href="/cluster/275/node/k8s-worker1.prd.bp.opstree.net/detail">k8s-worker1.prd.bp.opstree.net</a></td><td><div class="pod-lable" aria-label="app.kubernetes.io/component=controller">app.kubernetes.io/component=controller</div><div class="pod-lable" aria-label="app.kubernetes.io/instance=public-ingress">app.kubernetes.io/instance=public-ingress</div><div role="button" tabindex="0" class="chip-default chip-blue" style="height: fit-content;">+5</div><div class=""></div></td></tr><tr><td><a href="/cluster/275/namespace/bp-prod/pod/ot-payment-prod-bp-prod-55c7d5c947-2rrmf"><span aria-label="ot-payment-prod-bp-prod-55c7d5c947-2rrmf" class="">ot-payment-prod-bp-prod-55c7d5c947-2rrmf</span></a></td><td><span class="d-flex align-center"><span class="font-weight-500 color-tertiary font-weight-500">13 days ago</span></span></td><td><span class="d-flex align-center"><i class="ri-checkbox-circle-fill" font-size="large" style="color: var(--color-success-400);"></i><span class="font-weight-500 color-tertiary font-weight-500">Running</span></span></td><td><a href="/cluster/275/namespace/bp-prod/detail">bp-prod</a></td><td><a href="/cluster/275/node/k8s-master2.prd.bp.opstree.net/detail">k8s-master2.prd.bp.opstree.net</a></td><td><div class="pod-lable" aria-label="app=ot-payment-prod-bp-prod">app=ot-payment-prod-bp-prod</div><div class="pod-lable" aria-label="pod-template-hash=55c7d5c947">pod-template-hash=55c7d5c947</div></td></tr><tr><td><a href="/cluster/275/namespace/bp-prod/pod/ot-payment-prod-bp-prod-55c7d5c947-7zlfn"><span aria-label="ot-payment-prod-bp-prod-55c7d5c947-7zlfn" class="">ot-payment-prod-bp-prod-55c7d5c947-7zlfn</span></a></td><td><span class="d-flex align-center"><span class="font-weight-500 color-tertiary font-weight-500">13 days ago</span></span></td><td><span class="d-flex align-center"><i class="ri-checkbox-circle-fill" font-size="large" style="color: var(--color-success-400);"></i><span class="font-weight-500 color-tertiary font-weight-500">Running</span></span></td><td><a href="/cluster/275/namespace/bp-prod/detail">bp-prod</a></td><td><a href="/cluster/275/node/k8s-worker2.prd.bp.opstree.net/detail">k8s-worker2.prd.bp.opstree.net</a></td><td><div class="pod-lable" aria-label="app=ot-payment-prod-bp-prod">app=ot-payment-prod-bp-prod</div><div class="pod-lable" aria-label="pod-template-hash=55c7d5c947">pod-template-hash=55c7d5c947</div></td></tr><tr><td><a href="/cluster/275/namespace/bp-prod/pod/ot-payment-prod-bp-prod-55c7d5c947-846x7"><span aria-label="ot-payment-prod-bp-prod-55c7d5c947-846x7" class="">ot-payment-prod-bp-prod-55c7d5c947-846x7</span></a></td><td><span class="d-flex align-center"><span class="font-weight-500 color-tertiary font-weight-500">13 days ago</span></span></td><td><span class="d-flex align-center"><i class="ri-checkbox-circle-fill" font-size="large" style="color: var(--color-success-400);"></i><span class="font-weight-500 color-tertiary font-weight-500">Running</span></span></td><td><a href="/cluster/275/namespace/bp-prod/detail">bp-prod</a></td><td><a href="/cluster/275/node/k8s-worker2.prd.bp.opstree.net/detail">k8s-worker2.prd.bp.opstree.net</a></td><td><div class="pod-lable" aria-label="app=ot-payment-prod-bp-prod">app=ot-payment-prod-bp-prod</div><div class="pod-lable" aria-label="pod-template-hash=55c7d5c947">pod-template-hash=55c7d5c947</div></td></tr><tr><td><a href="/cluster/275/namespace/bp-prod/pod/ot-payment-prod-bp-prod-55c7d5c947-js7tl"><span aria-label="ot-payment-prod-bp-prod-55c7d5c947-js7tl" class="">ot-payment-prod-bp-prod-55c7d5c947-js7tl</span></a></td><td><span class="d-flex align-center"><span class="font-weight-500 color-tertiary font-weight-500">13 days ago</span></span></td><td><span class="d-flex align-center"><i class="ri-checkbox-circle-fill" font-size="large" style="color: var(--color-success-400);"></i><span class="font-weight-500 color-tertiary font-weight-500">Running</span></span></td><td><a href="/cluster/275/namespace/bp-prod/detail">bp-prod</a></td><td><a href="/cluster/275/node/k8s-worker1.prd.bp.opstree.net/detail">k8s-worker1.prd.bp.opstree.net</a></td><td><div class="pod-lable" aria-label="app=ot-payment-prod-bp-prod">app=ot-payment-prod-bp-prod</div><div class="pod-lable" aria-label="pod-template-hash=55c7d5c947">pod-template-hash=55c7d5c947</div></td></tr><tr><td><a href="/cluster/275/namespace/bp-prod/pod/ot-payment-prod-bp-prod-55c7d5c947-pnt62"><span aria-label="ot-payment-prod-bp-prod-55c7d5c947-pnt62" class="">ot-payment-prod-bp-prod-55c7d5c947-pnt62</span></a></td><td><span class="d-flex align-center"><span class="font-weight-500 color-tertiary font-weight-500">13 days ago</span></span></td><td><span class="d-flex align-center"><i class="ri-checkbox-circle-fill" font-size="large" style="color: var(--color-success-400);"></i><span class="font-weight-500 color-tertiary font-weight-500">Running</span></span></td><td><a href="/cluster/275/namespace/bp-prod/detail">bp-prod</a></td><td><a href="/cluster/275/node/k8s-worker1.prd.bp.opstree.net/detail">k8s-worker1.prd.bp.opstree.net</a></td><td><div class="pod-lable" aria-label="app=ot-payment-prod-bp-prod">app=ot-payment-prod-bp-prod</div><div class="pod-lable" aria-label="pod-template-hash=55c7d5c947">pod-template-hash=55c7d5c947</div></td></tr></tbody></table><div class="jss88" style="display: block; text-align: center;"><button class="btn btn-transparent btn-grey-navi hover-state"><span style="color: var(--color-badge-grey-text);"><i class="ri-loop-left-fill" style="font-weight: var(--font-weight-800);"></i>&nbsp;Load More</span></button></div></div></div></div></div><div></div></main></div></div></body></html>

@@ -4,9 +4,14 @@ import { ClusterCreationPage } from './ClusterCreationPage';
 import { ClusterDashboardPage } from './ClusterDashboardPage';
 import { LoginPage } from './LoginPage';
 import { NamespaceCreationPage } from './NamespaceCreationPage';
-
+import { NodesPage } from './NodesPage';
+import { PodsPage } from './PodsPage';
+import { PodsWorkflow } from '../workflows/infrastructure/PodsWorkflow';
+import { ContainerRegistryPage } from './ContainerRegistryPage';
 import { ClusterWorkflow } from '../workflows/infrastructure/ClusterWorkflow';
 import { NamespaceWorkflow } from '../workflows/infrastructure/NamespaceWorkflow';
+import { NodesWorkflow } from '../workflows/infrastructure/NodesWorkflow';
+import { ContainerRegistryWorkflow } from '../workflows/integration/ContainerRegistryWorkflow';
 
 export class PageManager {
 
@@ -18,8 +23,17 @@ export class PageManager {
 
     private _namespaceCreationPage?: NamespaceCreationPage;
 
+    private _nodesPage?: NodesPage;
+    private _nodesWorkflow?: NodesWorkflow;
+
+    private _podsPage?: PodsPage;
+    private _podsWorkflow?: PodsWorkflow;
+
     private _clusterWorkflow?: ClusterWorkflow;
     private _namespaceWorkflow?: NamespaceWorkflow;
+
+    private _containerRegistryPage?: ContainerRegistryPage;
+private _containerRegistryWorkflow?: ContainerRegistryWorkflow;
 
     constructor(page: Page) {
         this.page = page;
@@ -82,6 +96,66 @@ export class PageManager {
     }
 
     // =====================================================
+    // NODES PAGE
+    // =====================================================
+
+    get nodesPage(): NodesPage {
+
+        if (!this._nodesPage) {
+            this._nodesPage =
+                new NodesPage(this.page);
+        }
+
+        return this._nodesPage;
+    }
+
+    // =====================================================
+    // NODES WORKFLOW
+    // =====================================================
+
+    get nodesWorkflow(): NodesWorkflow {
+
+        if (!this._nodesWorkflow) {
+            this._nodesWorkflow =
+                new NodesWorkflow(
+                    this.nodesPage
+                );
+        }
+
+        return this._nodesWorkflow;
+    }
+
+    // =====================================================
+    // PODS PAGE
+    // =====================================================
+
+    get podsPage(): PodsPage {
+
+        if (!this._podsPage) {
+            this._podsPage =
+                new PodsPage(this.page);
+        }
+
+        return this._podsPage;
+    }
+
+    // =====================================================
+    // PODS WORKFLOW
+    // =====================================================
+
+    get podsWorkflow(): PodsWorkflow {
+
+        if (!this._podsWorkflow) {
+            this._podsWorkflow =
+                new PodsWorkflow(
+                    this.podsPage
+                );
+        }
+
+        return this._podsWorkflow;
+    }
+
+    // =====================================================
     // CLUSTER WORKFLOW
     // =====================================================
 
@@ -91,7 +165,8 @@ export class PageManager {
             this._clusterWorkflow =
                 new ClusterWorkflow(
                     this.clusterDashboardPage,
-                    this.clusterCreationPage
+                    this.clusterCreationPage,
+                    this.nodesPage
                 );
         }
 
@@ -113,4 +188,33 @@ export class PageManager {
 
         return this._namespaceWorkflow;
     }
+    // =====================================================
+// CONTAINER REGISTRY PAGE
+// =====================================================
+
+get containerRegistryPage(): ContainerRegistryPage {
+
+    if (!this._containerRegistryPage) {
+        this._containerRegistryPage =
+            new ContainerRegistryPage(this.page);
+    }
+
+    return this._containerRegistryPage;
+}
+// =====================================================
+// CONTAINER REGISTRY WORKFLOW
+// =====================================================
+
+get containerRegistryWorkflow(): ContainerRegistryWorkflow {
+
+    if (!this._containerRegistryWorkflow) {
+        this._containerRegistryWorkflow =
+            new ContainerRegistryWorkflow(
+                this.containerRegistryPage
+            );
+    }
+
+    return this._containerRegistryWorkflow;
+}
+
 }

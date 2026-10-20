@@ -100,13 +100,10 @@ async open(clusterId: string): Promise<void> {
 // =====================================================
 
 
-
 async selectRegistry(registryName: string): Promise<void> {
-    await this.page
-        .getByPlaceholder('Namespace Name')
-        .fill(`automation-ns-${Date.now()}`);
-
-    await expect(this.registryInput).toBeVisible();
+    await expect(this.registryInput).toBeVisible({
+        timeout: 15000
+    });
 
     await this.registryInput.click();
 
@@ -116,13 +113,13 @@ async selectRegistry(registryName: string): Promise<void> {
         .replace(/[_-]/g, '-')
         .toLowerCase();
 
+    const escapedTarget = normalizedTarget.replace(
+        /[.*+?^${}()|[\]\\]/g,
+        '\\$&'
+    );
+
     const matchingOption = options.filter({
-        hasText: new RegExp(
-            '^' +
-            normalizedTarget.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') +
-            '$',
-            'i'
-        )
+        hasText: new RegExp(`^${escapedTarget}$`, 'i')
     });
 
     await expect(matchingOption).toBeVisible({
@@ -131,14 +128,8 @@ async selectRegistry(registryName: string): Promise<void> {
 
     await matchingOption.click();
 
-    // Verify the selected registry in the UI.
     const selectedRegistry = this.page.getByText(
-        new RegExp(
-            '^' +
-            normalizedTarget.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') +
-            '$',
-            'i'
-        )
+        new RegExp(`^${escapedTarget}$`, 'i')
     );
 
     await expect(selectedRegistry.first()).toBeVisible({
@@ -153,35 +144,26 @@ async selectRegistry(registryName: string): Promise<void> {
     // APPLY MANIFEST
     // =====================================================
 
-    async applyManifest(): Promise<void> {
+   
+async applyManifest(): Promise<void> {
+    await expect(this.applyManifestButton).toBeVisible({
+        timeout: 30000
+    });
 
-        await expect(
-            this.applyManifestButton
-        ).toBeVisible({
-            timeout: 30_000
-        });
+    await expect(this.applyManifestButton).toBeEnabled({
+        timeout: 30000
+    });
 
-        await expect(
-            this.applyManifestButton
-        ).toBeEnabled({
-            timeout: 30_000
-        });
+    await this.applyManifestButton.click();
 
-        await this.applyManifestButton.click();
-    }
-async debugNamespacePage(): Promise<void> {
-  await this.page.waitForTimeout(3000);
-
-  console.log('URL:', this.page.url());
-  console.log('Page text:', (await this.page.locator('body').innerText()).slice(0, 5000));
-
-  const html = await this.page.locator('body').innerHTML();
-
-  const fs = await import('node:fs/promises');
-  await fs.writeFile('namespace-page.html', html, 'utf-8');
-
-  console.log('DOM saved to namespace-page.html');
+    await expect(
+        this.page.getByText('Creating Namespace...')
+    ).toBeVisible({
+        timeout: 15000
+    });
 }
+
+
     // =====================================================
     // VERIFY NAMESPACE DEPLOYMENT
     // =====================================================

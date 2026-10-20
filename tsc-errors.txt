@@ -1,0 +1,9 @@
+src/pages/PageManager.ts(147,21): error TS2740: Type 'PodsPage' is missing the following properties from type 'Page': evaluate, evaluateHandle, addInitScript, $, and 113 more.
+src/workflows/infrastructure/ClusterWorkflow.ts(22,14): error TS2339: Property 'verifyDashboardDisplayed' does not exist on type 'ClusterDashboardPage'.
+src/workflows/infrastructure/ClusterWorkflow.ts(40,14): error TS2339: Property 'goToNextPage' does not exist on type 'ClusterDashboardPage'.
+src/workflows/infrastructure/ClusterWorkflow.ts(46,14): error TS2339: Property 'getPaginationRange' does not exist on type 'ClusterDashboardPage'.
+src/workflows/infrastructure/ClusterWorkflow.ts(121,14): error TS2339: Property 'getClusterId' does not exist on type 'ClusterDashboardPage'.
+src/workflows/infrastructure/ClusterWorkflow.ts(134,14): error TS2339: Property 'deleteCluster' does not exist on type 'ClusterDashboardPage'.
+src/workflows/infrastructure/ClusterWorkflow.ts(149,14): error TS2339: Property 'hasCluster' does not exist on type 'ClusterDashboardPage'.
+tests/ui/clusterDashboard.spec.ts(63,48): error TS2339: Property 'verifyDashboardDisplayed' does not exist on type 'ClusterDashboardPage'.
+tests/ui/pods.spec.ts(46,40): error TS2554: Expected 1 arguments, but got 0.

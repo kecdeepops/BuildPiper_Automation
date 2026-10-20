@@ -1,13 +1,16 @@
-
 import { test } from '../../src/fixtures/ui.fixture';
 import { PageManager } from '../../src/pages/PageManager';
+test.setTimeout(150_000);
 
-test('Create Azure Registry and debug Namespace page', async ({ page }) => {
+test('Create Azure Registry and deploy Namespace', async ({ page }) => {
     const pages = new PageManager(page);
 
-    // Step 1: Create Registry
     const registryName = `automation_azure_${Date.now()}`;
-console.log('Registry name submitted:', registryName);
+    const namespaceName = `automation-ns-${Date.now()}`;
+
+    console.log('Registry name:', registryName);
+    console.log('Namespace name:', namespaceName);
+
     await test.step('Create Azure Container Registry', async () => {
         await pages.containerRegistryWorkflow.createRegistry(
             'Azure',
@@ -18,22 +21,29 @@ console.log('Registry name submitted:', registryName);
         );
     });
 
-    // Step 2: Open Cluster Dashboard
-    await test.step('Find cluster and capture Namespace DOM', async () => {
+    await test.step('Open cluster and create namespace', async () => {
         await pages.clusterWorkflow.openClusterDashboard();
-
         await pages.clusterWorkflow.verifyClusterDashboardDisplayed();
 
-await pages.clusterWorkflow.openClusterDashboard();
+        const cluster =
+            await pages.clusterWorkflow.getFirstAvailableCluster();
 
-await pages.clusterWorkflow.verifyClusterDashboardDisplayed();
+        console.log('Selected Cluster:', cluster.name);
+        console.log('Selected Cluster ID:', cluster.id);
 
-const cluster = await pages.clusterWorkflow.getFirstAvailableCluster();
+        await pages.namespaceWorkflow.openNamespaceCreationPage(
+            cluster.id
+        );
 
-console.log('Selected Cluster:', cluster.name);
-console.log('Selected Cluster ID:', cluster.id);
-await pages.namespaceWorkflow.openNamespaceCreationPage(cluster.id);
+        await pages.namespaceWorkflow.createNamespace(
+            namespaceName,
+            registryName
+        );
+    });
 
-await pages.namespaceWorkflow.selectRegistry(registryName);
+    await test.step('Verify namespace deployment', async () => {
+        await pages.namespaceWorkflow.verifyNamespaceDeploymentSuccessful();
+
+        console.log('Namespace deployment verified:', namespaceName);
     });
 });

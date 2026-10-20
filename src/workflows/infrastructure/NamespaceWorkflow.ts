@@ -154,6 +154,19 @@ async selectRegistry(registry: string): Promise<void> {
     }
 
     async debugNamespacePage(): Promise<void> {
-  await this.namespaceCreationPage.debugNamespacePage();
+}
+
+async createNamespace(
+    namespaceName: string,
+    registryName: string
+): Promise<void> {
+
+    await this.enterNamespaceName(namespaceName);
+
+    await this.selectRegistry(registryName);
+
+    await this.applyManifest();
+
+    await this.verifyNamespaceDeploymentSuccessful();
 }
 }
