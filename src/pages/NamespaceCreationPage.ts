@@ -28,10 +28,7 @@ export class NamespaceCreationPage extends BasePage {
             );
 
         // New UI registry input
-        this.registryInput =
-            this.page.getByTestId(
-                'registries-input'
-            );
+        this.registryInput = this.page.getByTestId('registries-autocomplete');
 
         this.applyManifestButton =
             this.page.getByRole(
@@ -70,14 +67,10 @@ export class NamespaceCreationPage extends BasePage {
     // OPEN NAMESPACE CREATION PAGE
     // =====================================================
 
-    async open(
-        clusterId: string
-    ): Promise<void> {
-
-        await this.navigate(
-            `/namespace/add/${clusterId}`
-        );
-    }
+   
+async open(clusterId: string): Promise<void> {
+    await this.navigate(`/cluster/${clusterId}/namespace/add`);
+}
 
     // =====================================================
     // ENTER NAMESPACE NAME
@@ -102,40 +95,59 @@ export class NamespaceCreationPage extends BasePage {
     // SELECT REGISTRY
     // =====================================================
 
-    async selectRegistry(
-        registry: string
-    ): Promise<void> {
+   // =====================================================
+// SELECT REGISTRY
+// =====================================================
 
-        // Open registry dropdown
-        await expect(
-            this.registryInput
-        ).toBeVisible({
-            timeout: 30_000
-        });
 
-        await this.registryInput.click();
 
-        // Select registry
-        const registryOption =
-            this.page.getByRole(
-                'checkbox',
-                {
-                    name: registry
-                }
-            );
+async selectRegistry(registryName: string): Promise<void> {
+    await this.page
+        .getByPlaceholder('Namespace Name')
+        .fill(`automation-ns-${Date.now()}`);
 
-        await expect(
-            registryOption
-        ).toBeVisible({
-            timeout: 30_000
-        });
+    await expect(this.registryInput).toBeVisible();
 
-        await registryOption.check();
+    await this.registryInput.click();
 
-        console.log(
-            `Registry '${registry}' selected`
-        );
-    }
+    const options = this.page.getByRole('option');
+
+    const normalizedTarget = registryName
+        .replace(/[_-]/g, '-')
+        .toLowerCase();
+
+    const matchingOption = options.filter({
+        hasText: new RegExp(
+            '^' +
+            normalizedTarget.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') +
+            '$',
+            'i'
+        )
+    });
+
+    await expect(matchingOption).toBeVisible({
+        timeout: 15000
+    });
+
+    await matchingOption.click();
+
+    // Verify the selected registry in the UI.
+    const selectedRegistry = this.page.getByText(
+        new RegExp(
+            '^' +
+            normalizedTarget.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') +
+            '$',
+            'i'
+        )
+    );
+
+    await expect(selectedRegistry.first()).toBeVisible({
+        timeout: 10000
+    });
+
+    console.log('Registry selected:', registryName);
+}
+
 
     // =====================================================
     // APPLY MANIFEST
@@ -157,7 +169,19 @@ export class NamespaceCreationPage extends BasePage {
 
         await this.applyManifestButton.click();
     }
+async debugNamespacePage(): Promise<void> {
+  await this.page.waitForTimeout(3000);
 
+  console.log('URL:', this.page.url());
+  console.log('Page text:', (await this.page.locator('body').innerText()).slice(0, 5000));
+
+  const html = await this.page.locator('body').innerHTML();
+
+  const fs = await import('node:fs/promises');
+  await fs.writeFile('namespace-page.html', html, 'utf-8');
+
+  console.log('DOM saved to namespace-page.html');
+}
     // =====================================================
     // VERIFY NAMESPACE DEPLOYMENT
     // =====================================================
@@ -495,4 +519,7 @@ export class NamespaceCreationPage extends BasePage {
             timeout: 30_000
         });
     }
+
+    
+
 }

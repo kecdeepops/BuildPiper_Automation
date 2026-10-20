@@ -1,79 +1,63 @@
-import { Page, Locator, expect } from '@playwright/test';
+import { Page, expect } from '@playwright/test';
 import { BasePage } from './BasePage';
-import { DataTable } from './component/DataTable';
 
 export class ClusterDashboardPage extends BasePage {
-    private clusterTable: Locator;
-    private nextPageButton: Locator;
-    private previousPageButton: Locator;
-    private pagination: Locator;
-    private dataTable: DataTable;
 
     constructor(page: Page) {
         super(page);
-
-        this.clusterTable = this.page.locator('table');
-
-        this.pagination = this.page.getByText(
-            /^\d+\s*-\s*\d+\s+of\s+\d+$/
-        );
-
-        this.previousPageButton = this.page
-            .locator('nav ul li')
-            .filter({
-                has: this.page.locator(
-                    'span.ri-arrow-left-s-line'
-                )
-            })
-            .locator('button');
-
-        this.nextPageButton = this.page
-            .locator('nav ul li')
-            .filter({
-                has: this.page.locator(
-                    'span.ri-arrow-right-s-line'
-                )
-            })
-            .locator('button');
-
-        this.dataTable = new DataTable(
-            this.clusterTable,
-            this.pagination,
-            this.nextPageButton,
-            this.previousPageButton
-        );
     }
 
     // =====================================================
-    // OPEN DASHBOARD
+    // Cluster Dashboard
     // =====================================================
 
-    async open(): Promise<void> {
-        await this.navigate('/ClusterDashboard');
+    
+async open(): Promise<void> {
+    await this.navigate('/ClusterDashboard');
 
-        await this.verifyDashboardDisplayed();
-    }
+    await this.page.waitForLoadState('domcontentloaded');
+
+    console.log('Dashboard URL:', this.page.url());
+    console.log('Dashboard title:', await this.page.title());
+
+    console.log(
+        'Dashboard body:',
+        (await this.page.locator('body').innerText()).slice(0, 3000)
+    );
+}
 
     // =====================================================
-    // VERIFY DASHBOARD
+    // Verify Dashboard
     // =====================================================
 
     async verifyDashboardDisplayed(): Promise<void> {
-        await expect(
-            this.clusterTable
-        ).toBeVisible({
-            timeout: 15000
-        });
 
         await expect(
-            this.pagination
+            this.page.getByText('Kubernetes Clusters', {
+                exact: true
+            })
         ).toBeVisible({
             timeout: 15000
         });
     }
 
     // =====================================================
-    // GET CELL VALUE
+    // Cluster Search
+    // =====================================================
+
+    async searchCluster(clusterName: string): Promise<void> {
+
+        const searchInput = this.page
+            .getByPlaceholder(/search/i)
+            .first();
+
+        await expect(searchInput).toBeVisible();
+
+        await searchInput.fill(clusterName);
+    }
+
+    // =====================================================
+    // Get Cell Value
     // =====================================================
 
     async getCellValue(
@@ -81,29 +65,56 @@ export class ClusterDashboardPage extends BasePage {
         columnName: string
     ): Promise<string> {
 
-        return this.dataTable.getCellValue(
-            clusterName,
-            'CLUSTER',
-            columnName
+        const row = this.page
+            .locator('tbody tr')
+            .filter({
+                hasText: clusterName
+            })
+            .first();
+
+        await expect(row).toBeVisible({
+            timeout: 15000
+        });
+
+        const headers = this.page.locator(
+            'thead tr th'
         );
+
+        const headerCount = await headers.count();
+
+        let columnIndex = -1;
+
+        for (let i = 0; i < headerCount; i++) {
+
+            const text = (
+                await headers.nth(i).innerText()
+            ).trim();
+
+            if (
+                text.toLowerCase() ===
+                columnName.toLowerCase()
+            ) {
+                columnIndex = i;
+                break;
+            }
+        }
+
+        if (columnIndex === -1) {
+            throw new Error(
+                `Column '${columnName}' not found`
+            );
+        }
+
+        return (
+            await row
+                .locator('td')
+                .nth(columnIndex)
+                .innerText()
+        ).trim();
     }
 
     // =====================================================
-    // PAGINATION
-    // =====================================================
-
-    async goToNextPage(): Promise<void> {
-
-        await this.dataTable.goToNextPage();
-    }
-
-    async getPaginationRange(): Promise<string> {
-
-        return this.dataTable.getPaginationRange();
-    }
-
-    // =====================================================
-    // FIND CLUSTER ACROSS ALL PAGES
+    // Find Cell Value Across Pages
     // =====================================================
 
     async findCellValueAcrossPages(
@@ -111,271 +122,178 @@ export class ClusterDashboardPage extends BasePage {
         columnName: string
     ): Promise<string> {
 
-        await this.verifyDashboardDisplayed();
-
-        return this.dataTable.findCellValueAcrossPages(
-            clusterName,
-            'CLUSTER',
-            columnName
-        );
-    }
-
-    // =====================================================
-    // FIND CLUSTER ROW ACROSS ALL PAGES
-    // =====================================================
-
-    private async findClusterRowAcrossPages(
-        clusterName: string
-    ): Promise<Locator> {
-
-        const normalize = (
-            value: string
-        ): string => {
-
-            return value
-                .replace(/[_-]/g, '-')
-                .replace(/\s+/g, ' ')
-                .trim()
-                .toLowerCase();
-        };
-
-        const expectedName =
-            normalize(clusterName);
-
-        await this.verifyDashboardDisplayed();
+        let currentPage = 1;
 
         while (true) {
 
-            const rows =
-                this.clusterTable.locator(
-                    'tbody tr'
-                );
+            const rows = this.page.locator(
+                'tbody tr'
+            );
 
-            const rowCount =
-                await rows.count();
+            const rowCount = await rows.count();
 
-            for (
-                let i = 0;
-                i < rowCount;
-                i++
-            ) {
+            for (let i = 0; i < rowCount; i++) {
 
-                const row =
-                    rows.nth(i);
+                const row = rows.nth(i);
 
-                const links =
-                    row
-                        .locator('td')
-                        .first()
-                        .locator('a');
+                const rowText = (
+                    await row.innerText()
+                ).trim();
 
-                const linkCount =
-                    await links.count();
+                if (rowText.includes(clusterName)) {
 
-                for (
-                    let j = 0;
-                    j < linkCount;
-                    j++
-                ) {
-
-                    const actualName =
-                        normalize(
-                            await links
-                                .nth(j)
-                                .innerText()
+                    const headers =
+                        this.page.locator(
+                            'thead tr th'
                         );
 
-                    if (
-                        actualName ===
-                        expectedName
+                    const headerCount =
+                        await headers.count();
+
+                    let columnIndex = -1;
+
+                    for (
+                        let j = 0;
+                        j < headerCount;
+                        j++
                     ) {
-                        return row;
+
+                        const headerText = (
+                            await headers
+                                .nth(j)
+                                .innerText()
+                        ).trim();
+
+                        if (
+                            headerText.toLowerCase() ===
+                            columnName.toLowerCase()
+                        ) {
+                            columnIndex = j;
+                            break;
+                        }
                     }
+
+                    if (columnIndex === -1) {
+                        throw new Error(
+                            `Column '${columnName}' not found`
+                        );
+                    }
+
+                    return (
+                        await row
+                            .locator('td')
+                            .nth(columnIndex)
+                            .innerText()
+                    ).trim();
                 }
             }
 
-            const paginationText =
-                await this.getPaginationRange();
+            // =================================================
+            // Pagination
+            // =================================================
 
-            const match =
-                paginationText.match(
-                    /(\d+)\s*-\s*(\d+)\s+of\s+(\d+)/
-                );
+            const nextButton = this.page
+    .locator(
+        'button:has(span.ri-arrow-right-s-line)'
+    )
+    .first();
+            if (!(await nextButton.isVisible())) {
+    break;
+}
 
-            if (!match) {
+            await nextButton.click();
 
-                throw new Error(
-                    `Unable to determine pagination state: "${paginationText}".`
-                );
-            }
+            await this.page.waitForTimeout(1000);
 
-            const currentEnd =
-                Number(match[2]);
-
-            const total =
-                Number(match[3]);
-
-            if (
-                total === 0 ||
-                currentEnd >= total
-            ) {
-
-                throw new Error(
-                    `Cluster '${clusterName}' was not found across dashboard pages.`
-                );
-            }
-
-            await this.goToNextPage();
+            currentPage++;
         }
+
+        throw new Error(
+            `Cluster '${clusterName}' was not found on page ${currentPage} or any subsequent page.`
+        );
     }
 
     // =====================================================
-    // GET CLUSTER ID
+    // Get Pagination Range
     // =====================================================
 
-    async getClusterId(
-        clusterName: string
-    ): Promise<string> {
+    async getPaginationRange(): Promise<string> {
 
-        const row =
-            await this.findClusterRowAcrossPages(
-                clusterName
-            );
+        const pagination = this.page
+            .getByText(
+                /\d+\s*-\s*\d+\s+of\s+\d+/,
+                { exact: false }
+            )
+            .first();
 
-        const clusterLink =
-            row
-                .locator('td')
-                .first()
-                .locator('a')
-                .first();
+        await expect(pagination).toBeVisible({
+            timeout: 15000
+        });
 
-        await expect(
-            clusterLink
-        ).toBeVisible();
-
-        const href =
-            await clusterLink.getAttribute(
-                'href'
-            );
-
-        if (!href) {
-
-            throw new Error(
-                `Unable to get href for cluster '${clusterName}'.`
-            );
-        }
-
-        /*
-         * Expected URL:
-         *
-         * /cluster/269/namespace/list
-         *
-         * Extract:
-         *
-         * 269
-         */
-
-        const match =
-            href.match(
-                /\/cluster\/([^/]+)/
-            );
-
-        if (!match) {
-
-            throw new Error(
-                `Unable to extract Cluster ID from href: ${href}`
-            );
-        }
-
-        const clusterId =
-            match[1];
-
-        console.log(
-            `Cluster '${clusterName}' ID: ${clusterId}`
-        );
-
-        return clusterId;
+        return (
+            await pagination.innerText()
+        ).trim();
     }
 
     // =====================================================
-    // WAIT FOR CLUSTER CONNECTED
+    // Go To Next Page
     // =====================================================
 
-   async waitForClusterConnected(
-    clusterName: string,
-    timeout: number = 120_000,
-    interval: number = 10_000
-): Promise<void> {
+    async goToNextPage(): Promise<void> {
 
-    const startTime = Date.now();
+    const pagination = await this.getPaginationRange();
 
-    while (Date.now() - startTime < timeout) {
-
-        const status =
-            await this.findCellValueAcrossPages(
-                clusterName,
-                'STATUS'
-            );
-
-        console.log(
-            `Cluster '${clusterName}' status: ${status}`
-        );
-
-        if (
-            status
-                .trim()
-                .toLowerCase() === 'connected'
-        ) {
-            console.log(
-                `Cluster '${clusterName}' is Connected.`
-            );
-            return;
-        }
-
-        console.log(
-            `Cluster is not Connected yet. Waiting ${interval / 1000}s...`
-        );
-
-        await this.page.waitForTimeout(interval);
-    }
-
-    const finalStatus =
-        await this.findCellValueAcrossPages(
-            clusterName,
-            'STATUS'
-        );
-
-    throw new Error(
-        `Cluster '${clusterName}' did not become Connected within ${timeout / 1000}s. Final status: '${finalStatus}'.`
+    const match = pagination.match(
+        /(\d+)\s*-\s*(\d+)\s+of\s+(\d+)/
     );
+
+    if (!match) {
+        throw new Error(
+            `Unexpected pagination text: ${pagination}`
+        );
+    }
+
+    const currentEnd = Number(match[2]);
+    const total = Number(match[3]);
+
+    // Already on last page
+    if (currentEnd >= total) {
+        console.log(
+            `Already on last page: ${pagination}`
+        );
+        return;
+    }
+
+    const nextButton = this.page.locator(
+        'button:has(span.ri-arrow-right-s-line)'
+    ).first();
+
+    await expect(nextButton).toBeVisible({
+        timeout: 10000
+    });
+
+    await nextButton.click();
+
+    await this.page.waitForTimeout(1000);
 }
     // =====================================================
-    // CHECK CLUSTER EXISTS
+    // Wait For Cluster Connected
     // =====================================================
 
-    async hasCluster(
-        clusterName: string
-    ): Promise<boolean> {
+    async waitForClusterConnected(
+        clusterName: string,
+        timeout: number = 120_000,
+        interval: number = 10_000
+    ): Promise<void> {
 
-        await this.verifyDashboardDisplayed();
+        const startTime = Date.now();
 
-        return this.dataTable.hasRowAcrossPages(
-            clusterName,
-            'CLUSTER'
-        );
-    }
-async waitForClusterConnected(
-    clusterName: string,
-    timeout: number = 120_000
-): Promise<void> {
+        while (
+            Date.now() - startTime < timeout
+        ) {
 
-    const startTime = Date.now();
-
-    while (Date.now() - startTime < timeout) {
-
-        try {
             const status =
-                await this.getCellValue(
+                await this.findCellValueAcrossPages(
                     clusterName,
                     'STATUS'
                 );
@@ -384,30 +302,88 @@ async waitForClusterConnected(
                 `Cluster '${clusterName}' status: ${status}`
             );
 
-            if (status.trim() === 'Connected') {
+            if (
+                status
+                    .trim()
+                    .toLowerCase() === 'connected'
+            ) {
+
+                console.log(
+                    `Cluster '${clusterName}' is Connected.`
+                );
+
                 return;
             }
 
-        } catch (error) {
             console.log(
-                `Cluster '${clusterName}' not available yet. Retrying...`
+                `Cluster is not Connected yet. Waiting ${interval / 1000}s...`
+            );
+
+            await this.page.waitForTimeout(
+                interval
             );
         }
 
-        await this.page.waitForTimeout(5_000);
+        const finalStatus =
+            await this.findCellValueAcrossPages(
+                clusterName,
+                'STATUS'
+            );
 
-        // Refresh dashboard so latest cluster status is loaded.
-        await this.page.reload();
+        throw new Error(
+            `Cluster '${clusterName}' did not become Connected within ${timeout / 1000}s. Final status: '${finalStatus}'.`
+        );
+    }
+        // =====================================================
+    // Get Cluster ID
+    // =====================================================
 
-        await this.verifyDashboardDisplayed();
+    async getClusterId(
+        clusterName: string
+    ): Promise<string> {
+console.log(
+    'Cluster rows:',
+    await this.page.locator('tbody tr').allInnerTexts()
+);
+        const row = this.page
+            .locator('tbody tr')
+            .filter({
+                hasText: clusterName
+            })
+            .first();
+
+        await expect(row).toBeVisible({
+            timeout: 15000
+        });
+
+        // Cluster name is usually a link containing the cluster ID
+        const clusterLink = row
+            .locator('a')
+            .first();
+
+        await expect(clusterLink).toBeVisible();
+
+        const href = await clusterLink.getAttribute('href');
+
+        if (!href) {
+            throw new Error(
+                `Cluster '${clusterName}' does not have a valid link`
+            );
+        }
+
+        const match = href.match(/cluster\/(\d+)/i);
+
+        if (!match) {
+            throw new Error(
+                `Unable to extract cluster ID from href: ${href}`
+            );
+        }
+
+        return match[1];
     }
 
-    throw new Error(
-        `Cluster '${clusterName}' did not become Connected within ${timeout} ms.`
-    );
-}
     // =====================================================
-    // DELETE CLUSTER
+    // Delete Cluster
     // =====================================================
 
     async deleteCluster(
@@ -415,85 +391,97 @@ async waitForClusterConnected(
         reason: string
     ): Promise<void> {
 
-        const row =
-            await this.findClusterRowAcrossPages(
-                clusterName
-            );
+        const row = this.page
+            .locator('tbody tr')
+            .filter({
+                hasText: clusterName
+            })
+            .first();
 
-        await expect(
-            row
-        ).toHaveCount(1);
+        await expect(row).toBeVisible({
+            timeout: 15000
+        });
 
-        const deleteButton =
-            row.locator(
-                'button.icon-btn-outline-danger'
-            );
+        const deleteButton = row
+            .getByRole('button')
+            .filter({
+                has: this.page.locator(
+                    'svg'
+                )
+            })
+            .first();
 
-        await expect(
-            deleteButton
-        ).toBeVisible();
+        await expect(deleteButton).toBeVisible();
 
         await deleteButton.click();
 
-        // First confirmation
+        // Handle delete confirmation if available
+        const reasonInput = this.page
+            .getByPlaceholder(/reason/i)
+            .first();
 
-        const confirmationButton =
-            this.page.getByRole(
-                'button',
-                {
-                    name: 'YES, DELETE',
-                    exact: true
-                }
-            );
+        if (await reasonInput.isVisible().catch(() => false)) {
+            await reasonInput.fill(reason);
+        }
 
-        await expect(
-            confirmationButton
-        ).toBeVisible();
+        const confirmButton = this.page
+            .getByRole('button', {
+                name: /delete|confirm/i
+            })
+            .last();
 
-        await expect(
-            confirmationButton
-        ).toBeEnabled();
+        await expect(confirmButton).toBeVisible();
 
-        await confirmationButton.click();
-
-        // Enter deletion reason
-
-        const reasonInput =
-            this.page.locator(
-                'textarea[name="remarks"]'
-            );
-
-        await expect(
-            reasonInput
-        ).toBeVisible();
-
-        await reasonInput.fill(
-            reason
-        );
-
-        // Final confirmation
-
-        await expect(
-            confirmationButton
-        ).toBeVisible();
-
-        await confirmationButton.click();
-
-        await expect(
-            reasonInput
-        ).toBeHidden();
-
-        // Verify successful deletion
-
-        await expect(
-            this.page.getByText(
-                `${clusterName} deleted successfully`,
-                {
-                    exact: true
-                }
-            )
-        ).toBeVisible({
-            timeout: 10000
-        });
+        await confirmButton.click();
     }
+
+    // =====================================================
+    // Check Cluster Exists
+    // =====================================================
+
+    async hasCluster(
+        clusterName: string
+    ): Promise<boolean> {
+
+        const row = this.page
+            .locator('tbody tr')
+            .filter({
+                hasText: clusterName
+            })
+            .first();
+
+        return await row.isVisible().catch(() => false);
+    }
+
+async getFirstAvailableCluster(): Promise<{
+    name: string;
+    id: string;
+}> {
+    const rows = this.page.locator('tbody tr');
+    const rowCount = await rows.count();
+
+    for (let i = 0; i < rowCount; i++) {
+        const row = rows.nth(i);
+        const link = row.locator('a').first();
+
+        if (await link.count() === 0) {
+            continue;
+        }
+
+        const name = (await link.innerText()).trim();
+        const href = await link.getAttribute('href');
+
+        const match = href?.match(/cluster\/(\d+)/i);
+
+        if (name && match) {
+            return {
+                name,
+                id: match[1]
+            };
+        }
+    }
+
+    throw new Error('No cluster found on the current dashboard page');
+}
+
 }

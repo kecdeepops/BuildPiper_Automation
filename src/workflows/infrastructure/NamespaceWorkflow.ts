@@ -152,4 +152,8 @@ async selectRegistry(registry: string): Promise<void> {
                 namespaceName
             );
     }
+
+    async debugNamespacePage(): Promise<void> {
+  await this.namespaceCreationPage.debugNamespacePage();
+}
 }

@@ -1,16 +1,18 @@
 import { ClusterDashboardPage } from '../../pages/ClusterDashboardPage';
 import { ClusterCreationPage } from '../../pages/ClusterCreationPage';
+import { NodesPage } from '../../pages/NodesPage';
 
 export class ClusterWorkflow {
 
     constructor(
         private clusterDashboardPage: ClusterDashboardPage,
-        private clusterCreationPage: ClusterCreationPage
+        private clusterCreationPage: ClusterCreationPage,
+        private nodesPage: NodesPage
     ) {}
 
-    // =========================
+    // =====================================================
     // CLUSTER DASHBOARD
-    // =========================
+    // =====================================================
 
     async openClusterDashboard(): Promise<void> {
         await this.clusterDashboardPage.open();
@@ -57,9 +59,9 @@ export class ClusterWorkflow {
             );
     }
 
-    // =========================
+    // =====================================================
     // CLUSTER CREATION
-    // =========================
+    // =====================================================
 
     async openClusterCreationPage(): Promise<void> {
 
@@ -108,9 +110,9 @@ export class ClusterWorkflow {
             .finishSetup();
     }
 
-    // =========================
+    // =====================================================
     // CLUSTER ID
-    // =========================
+    // =====================================================
 
     async getClusterId(
         clusterName: string
@@ -120,9 +122,9 @@ export class ClusterWorkflow {
             .getClusterId(clusterName);
     }
 
-    // =========================
+    // =====================================================
     // CLUSTER DELETE
-    // =========================
+    // =====================================================
 
     async deleteCluster(
         clusterName: string,
@@ -136,9 +138,9 @@ export class ClusterWorkflow {
             );
     }
 
-    // =========================
+    // =====================================================
     // CLUSTER EXISTENCE
-    // =========================
+    // =====================================================
 
     async hasCluster(
         clusterName: string
@@ -147,15 +149,68 @@ export class ClusterWorkflow {
         return this.clusterDashboardPage
             .hasCluster(clusterName);
     }
-    async waitForClusterConnected(
-    clusterName: string,
-    timeout: number = 120_000
-): Promise<void> {
 
-    await this.clusterDashboardPage
-        .waitForClusterConnected(
-            clusterName,
-            timeout
-        );
+    // =====================================================
+    // WAIT FOR CLUSTER CONNECTED
+    // =====================================================
+
+    async waitForClusterConnected(
+        clusterName: string,
+        timeout: number = 120_000
+    ): Promise<void> {
+
+        await this.clusterDashboardPage
+            .waitForClusterConnected(
+                clusterName,
+                timeout
+            );
+    }
+
+    // =====================================================
+    // NODES
+    // =====================================================
+
+    async openNodesAvailable(): Promise<void> {
+
+        await this.nodesPage.open();
+    }
+
+    async verifyNodesPageDisplayed(): Promise<void> {
+
+        await this.nodesPage
+            .verifyNodesPageDisplayed();
+    }
+
+    async verifyNodeListDisplayed(): Promise<void> {
+
+        await this.nodesPage
+            .verifyNodeListDisplayed();
+    }
+
+    async getFirstNodeName(): Promise<string> {
+
+        return await this.nodesPage
+            .getFirstNodeName();
+    }
+
+    async getFirstNodeStatus(): Promise<string> {
+
+        return await this.nodesPage
+            .getFirstNodeStatus();
+    }
+
+    async verifyFirstNodeHasData(): Promise<void> {
+
+        await this.nodesPage
+            .verifyFirstNodeHasData();
+    }
+
+async getFirstAvailableCluster(): Promise<{
+    name: string;
+    id: string;
+}> {
+    return await this.clusterDashboardPage
+        .getFirstAvailableCluster();
 }
+
 }
