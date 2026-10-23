@@ -3,57 +3,70 @@ import { config } from './config/config';
 
 export default defineConfig({
 
-    testDir: './tests',
+  testDir: './tests',
 
-    fullyParallel: true,
+  // Keep tests sequential for application stability
+  fullyParallel: false,
 
-    forbidOnly: !!process.env.CI,
+  forbidOnly: !!process.env.CI,
 
-    retries: process.env.CI ? 2 : 0,
+  retries: process.env.CI ? 2 : 0,
 
-workers: process.env.CI ? 2 : 2,
-    reporter: [
-  ['list'],
-  [
-    'allure-playwright',
+  // Single worker
+  workers: 1,
+
+  reporter: [
+    ['list'],
+
+    [
+      'allure-playwright',
+      {
+        detail: true,
+        resultsDir: 'allure-results',
+        suiteTitle: false,
+      },
+    ],
+  ],
+
+  use: {
+    baseURL: config.baseUrl,
+
+    trace: 'on-first-retry',
+
+    screenshot: 'only-on-failure',
+
+    video: 'retain-on-failure',
+
+    headless: false,
+  },
+
+  projects: [
+
+    // =====================================================
+    // AUTHENTICATION SETUP
+    // =====================================================
+
     {
-      detail: true,
-      resultsDir: 'allure-results',
-      suiteTitle: false,
+      name: 'setup',
+
+      testMatch: /.*auth\.setup\.ts/,
+    },
+
+    // =====================================================
+    // CHROMIUM UI TESTS
+    // =====================================================
+
+    {
+      name: 'chromium',
+
+      use: {
+        ...devices['Desktop Chrome'],
+
+        // Reuse authenticated session
+        storageState: 'playwright/.auth/user.json',
+      },
+
+      dependencies: ['setup'],
     },
   ],
-],
-
-    use: {
-        baseURL: config.baseUrl,
-
-        trace: 'on-first-retry',
-
-        screenshot: 'only-on-failure',
-
-        video: 'retain-on-failure',
-    },
-
-    projects: [
-
-        // 1. Authentication setup
-        {
-            name: 'setup',
-
-            testMatch: /.*auth\.setup\.ts/,
-        },
-
-        // 2. Actual UI tests
-        {
-            name: 'chromium',
-
-            use: {
-                ...devices['Desktop Chrome'],
-
-                storageState: 'playwright/.auth/user.json',
-            },
-
-            dependencies: ['setup'],
-        },
-    ],
 });

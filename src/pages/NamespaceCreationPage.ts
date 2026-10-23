@@ -1,4 +1,5 @@
 import { Page, Locator, expect } from '@playwright/test';
+
 import { BasePage } from './BasePage';
 
 export class NamespaceCreationPage extends BasePage {
@@ -15,8 +16,11 @@ export class NamespaceCreationPage extends BasePage {
     private namespaceSearchInput: Locator;
     private namespaceSearchButton: Locator;
 
+
     constructor(page: Page) {
+
         super(page);
+
 
         // =====================================================
         // CREATE NAMESPACE
@@ -27,8 +31,24 @@ export class NamespaceCreationPage extends BasePage {
                 'input[name="name"]'
             );
 
-        // New UI registry input
-        this.registryInput = this.page.getByTestId('registries-autocomplete');
+
+        // =====================================================
+        // REGISTRY INPUT
+        // =====================================================
+
+        // MUI Autocomplete actual input
+        // DOM:
+        // <input
+        //   role="combobox"
+        //   placeholder="Enter registry name"
+        //   data-testid="registries_1-input"
+        // >
+
+        this.registryInput =
+            this.page.getByTestId(
+                'registries_1-input'
+            );
+
 
         this.applyManifestButton =
             this.page.getByRole(
@@ -38,6 +58,7 @@ export class NamespaceCreationPage extends BasePage {
                 }
             );
 
+
         this.continueButton =
             this.page.getByRole(
                 'button',
@@ -46,16 +67,19 @@ export class NamespaceCreationPage extends BasePage {
                 }
             );
 
+
         // =====================================================
         // SEARCH
         // =====================================================
 
         // Search locator is intentionally not used for now.
         // New UI does not expose the old Name search input.
+
         this.namespaceSearchInput =
             this.page.locator(
                 'input[placeholder="Name"], input[name="name"]'
             );
+
 
         this.namespaceSearchButton =
             this.page.locator(
@@ -63,14 +87,18 @@ export class NamespaceCreationPage extends BasePage {
             );
     }
 
+
     // =====================================================
     // OPEN NAMESPACE CREATION PAGE
     // =====================================================
 
-   
-async open(clusterId: string): Promise<void> {
-    await this.navigate(`/cluster/${clusterId}/namespace/add`);
-}
+    async open(clusterId: string): Promise<void> {
+
+        await this.navigate(
+            `/cluster/${clusterId}/namespace/add`
+        );
+    }
+
 
     // =====================================================
     // ENTER NAMESPACE NAME
@@ -91,52 +119,118 @@ async open(clusterId: string): Promise<void> {
         );
     }
 
-    // =====================================================
-    // SELECT REGISTRY
-    // =====================================================
+async selectRegistry(
+    registryName: string
+): Promise<void> {
 
-   // =====================================================
-// SELECT REGISTRY
-// =====================================================
+    console.log(
+        `Selecting registry: ${registryName}`
+    );
 
+    // =================================================
+    // 1. WAIT FOR REGISTRY INPUT
+    // =================================================
 
-async selectRegistry(registryName: string): Promise<void> {
-    await expect(this.registryInput).toBeVisible({
-        timeout: 15000
+    await expect(
+        this.registryInput
+    ).toBeVisible({
+        timeout: 15_000
     });
+
+    // =================================================
+    // 2. CLICK INPUT
+    // =================================================
 
     await this.registryInput.click();
 
-    const options = this.page.getByRole('option');
+    // =================================================
+    // 3. TYPE REGISTRY NAME
+    // =================================================
 
-    const normalizedTarget = registryName
-        .replace(/[_-]/g, '-')
-        .toLowerCase();
-
-    const escapedTarget = normalizedTarget.replace(
-        /[.*+?^${}()|[\]\\]/g,
-        '\\$&'
+    await this.registryInput.fill(
+        registryName
     );
 
-    const matchingOption = options.filter({
-        hasText: new RegExp(`^${escapedTarget}$`, 'i')
+    // =================================================
+    // 4. WAIT FOR DROPDOWN
+    // =================================================
+
+    const listbox =
+        this.page.getByRole('listbox');
+
+    await expect(
+        listbox
+    ).toBeVisible({
+        timeout: 10_000
     });
 
-    await expect(matchingOption).toBeVisible({
-        timeout: 15000
+    // =================================================
+    // 5. FIND EXACT REGISTRY
+    // =================================================
+
+    const matchingOption =
+        listbox.getByText(
+            registryName,
+            {
+                exact: true
+            }
+        );
+
+    await expect(
+        matchingOption
+    ).toBeVisible({
+        timeout: 15_000
     });
 
-    await matchingOption.click();
-
-    const selectedRegistry = this.page.getByText(
-        new RegExp(`^${escapedTarget}$`, 'i')
+    console.log(
+        `Registry option found: ${registryName}`
     );
 
-    await expect(selectedRegistry.first()).toBeVisible({
-        timeout: 10000
+    // =================================================
+    // 6. SELECT EXACT OPTION
+    // =================================================
+
+    await matchingOption.click({
+        force: true
     });
 
-    console.log('Registry selected:', registryName);
+    // =================================================
+    // 7. WAIT FOR SELECTION
+    // =================================================
+
+  // =================================================
+// 8. VERIFY SELECTION
+// =================================================
+
+const selectedRegistry =
+    this.page
+        .getByTestId('registries_1-autocomplete')
+        .locator('.MuiAutocomplete-tag')
+        .filter({
+            hasText: registryName
+        });
+
+await expect(
+    selectedRegistry
+).toBeVisible({
+    timeout: 10_000
+});
+
+console.log(
+    `Registry selected successfully: ${registryName}`
+);
+
+    // =================================================
+    // 8. CLOSE DROPDOWN
+    // =================================================
+
+    await this.registryInput.press(
+        'Escape'
+    );
+
+    console.log(
+        `Registry selected successfully: ${registryName}`
+    );
 }
 
 
@@ -144,24 +238,33 @@ async selectRegistry(registryName: string): Promise<void> {
     // APPLY MANIFEST
     // =====================================================
 
-   
-async applyManifest(): Promise<void> {
-    await expect(this.applyManifestButton).toBeVisible({
-        timeout: 30000
-    });
+    async applyManifest(): Promise<void> {
 
-    await expect(this.applyManifestButton).toBeEnabled({
-        timeout: 30000
-    });
+        await expect(
+            this.applyManifestButton
+        ).toBeVisible({
+            timeout: 30_000
+        });
 
-    await this.applyManifestButton.click();
 
-    await expect(
-        this.page.getByText('Creating Namespace...')
-    ).toBeVisible({
-        timeout: 15000
-    });
-}
+        await expect(
+            this.applyManifestButton
+        ).toBeEnabled({
+            timeout: 30_000
+        });
+
+
+        await this.applyManifestButton.click();
+
+
+        await expect(
+            this.page.getByText(
+                'Creating Namespace...'
+            )
+        ).toBeVisible({
+            timeout: 15_000
+        });
+    }
 
 
     // =====================================================
@@ -178,6 +281,7 @@ async applyManifest(): Promise<void> {
                 }
             );
 
+
         const errorMessage =
             this.page.getByText(
                 'Unable to create namespace.',
@@ -186,11 +290,13 @@ async applyManifest(): Promise<void> {
                 }
             );
 
+
         await expect(
             successMessage.or(errorMessage)
         ).toBeVisible({
             timeout: 120_000
         });
+
 
         if (
             await errorMessage.isVisible()
@@ -201,6 +307,7 @@ async applyManifest(): Promise<void> {
             );
         }
     }
+
 
     // =====================================================
     // CONTINUE
@@ -214,8 +321,10 @@ async applyManifest(): Promise<void> {
             timeout: 15_000
         });
 
+
         await this.continueButton.click();
     }
+
 
     // =====================================================
     // SEARCH NAMESPACE
@@ -239,12 +348,14 @@ async applyManifest(): Promise<void> {
                 }
             );
 
+
         await expect(
             namespace
         ).toBeVisible({
             timeout: 30_000
         });
     }
+
 
     // =====================================================
     // VERIFY NAMESPACE ACTIVE
@@ -265,6 +376,7 @@ async applyManifest(): Promise<void> {
             timeout: 30_000
         });
 
+
         // Locate namespace directly
         const namespace =
             this.page.getByText(
@@ -274,17 +386,20 @@ async applyManifest(): Promise<void> {
                 }
             );
 
+
         await expect(
             namespace
         ).toBeVisible({
             timeout: 30_000
         });
 
+
         // Get complete table row
         const row =
             namespace.locator(
                 'xpath=ancestor::tr'
             );
+
 
         // Verify Active status
         await expect(
@@ -298,6 +413,7 @@ async applyManifest(): Promise<void> {
             timeout: 30_000
         });
     }
+
 
     // =====================================================
     // VERIFY NAMESPACE EXISTS
@@ -315,12 +431,14 @@ async applyManifest(): Promise<void> {
                 }
             );
 
+
         await expect(
             namespace
         ).toBeVisible({
             timeout: 15_000
         });
     }
+
 
     // =====================================================
     // OPEN NAMESPACE DETAILS
@@ -338,14 +456,17 @@ async applyManifest(): Promise<void> {
                 }
             );
 
+
         await expect(
             namespace
         ).toBeVisible({
             timeout: 30_000
         });
 
+
         await namespace.click();
     }
+
 
     // =====================================================
     // EDIT NAMESPACE
@@ -361,14 +482,17 @@ async applyManifest(): Promise<void> {
                 }
             );
 
+
         await expect(
             editButton
         ).toBeVisible({
             timeout: 15_000
         });
 
+
         await editButton.click();
     }
+
 
     // =====================================================
     // UPDATE NAMESPACE NAME
@@ -384,10 +508,12 @@ async applyManifest(): Promise<void> {
             timeout: 30_000
         });
 
+
         await this.namespaceNameInput.fill(
             namespaceName
         );
     }
+
 
     // =====================================================
     // DELETE NAMESPACE
@@ -403,14 +529,17 @@ async applyManifest(): Promise<void> {
                 }
             );
 
+
         await expect(
             deleteButton
         ).toBeVisible({
             timeout: 15_000
         });
 
+
         await deleteButton.click();
     }
+
 
     // =====================================================
     // ENTER DELETE REASON
@@ -425,16 +554,19 @@ async applyManifest(): Promise<void> {
                 'textarea'
             );
 
+
         await expect(
             reasonInput
         ).toBeVisible({
             timeout: 15_000
         });
 
+
         await reasonInput.fill(
             reason
         );
     }
+
 
     // =====================================================
     // DELETE NAMESPACE
@@ -450,14 +582,17 @@ async applyManifest(): Promise<void> {
                 }
             );
 
+
         await expect(
             deleteButton
         ).toBeVisible({
             timeout: 15_000
         });
 
+
         await deleteButton.click();
     }
+
 
     // =====================================================
     // DELETE FROM BP AND K8S
@@ -473,14 +608,17 @@ async applyManifest(): Promise<void> {
                 }
             );
 
+
         await expect(
             deleteButton
         ).toBeVisible({
             timeout: 15_000
         });
 
+
         await deleteButton.click();
     }
+
 
     // =====================================================
     // VERIFY NAMESPACE DELETED
@@ -501,7 +639,4 @@ async applyManifest(): Promise<void> {
             timeout: 30_000
         });
     }
-
-    
-
 }

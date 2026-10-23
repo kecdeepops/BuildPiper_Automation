@@ -13,6 +13,11 @@ export const test = base.extend<UIFixtures>({
 
     pageManager: async ({ page }, use) => {
 
+        // Every UI test starts from the common Dashboard
+        await page.goto('/ClusterDashboard');
+
+        await page.waitForLoadState('domcontentloaded');
+
         const pageManager = new PageManager(page);
 
         await use(pageManager);

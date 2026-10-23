@@ -6,38 +6,52 @@ import { LoginPage } from './LoginPage';
 import { NamespaceCreationPage } from './NamespaceCreationPage';
 import { NodesPage } from './NodesPage';
 import { PodsPage } from './PodsPage';
-import { PodsWorkflow } from '../workflows/infrastructure/PodsWorkflow';
 import { ContainerRegistryPage } from './ContainerRegistryPage';
+import { RepositoryPage } from './RepositoryPage';
+
+import { PodsWorkflow } from '../workflows/infrastructure/PodsWorkflow';
 import { ClusterWorkflow } from '../workflows/infrastructure/ClusterWorkflow';
 import { NamespaceWorkflow } from '../workflows/infrastructure/NamespaceWorkflow';
 import { NodesWorkflow } from '../workflows/infrastructure/NodesWorkflow';
+
 import { ContainerRegistryWorkflow } from '../workflows/integration/ContainerRegistryWorkflow';
+import { RepositoryWorkflow } from '../workflows/integration/RepositoryWorkflow';
+
 
 export class PageManager {
 
-    private page: Page;
+    private readonly page: Page;
+
+    // =====================================================
+    // PAGE OBJECTS
+    // =====================================================
 
     private _loginPage?: LoginPage;
     private _clusterDashboardPage?: ClusterDashboardPage;
     private _clusterCreationPage?: ClusterCreationPage;
-
     private _namespaceCreationPage?: NamespaceCreationPage;
-
     private _nodesPage?: NodesPage;
-    private _nodesWorkflow?: NodesWorkflow;
-
     private _podsPage?: PodsPage;
-    private _podsWorkflow?: PodsWorkflow;
+    private _containerRegistryPage?: ContainerRegistryPage;
+    private _repositoryPage?: RepositoryPage;
 
+
+    // =====================================================
+    // WORKFLOWS
+    // =====================================================
+
+    private _nodesWorkflow?: NodesWorkflow;
+    private _podsWorkflow?: PodsWorkflow;
     private _clusterWorkflow?: ClusterWorkflow;
     private _namespaceWorkflow?: NamespaceWorkflow;
+    private _containerRegistryWorkflow?: ContainerRegistryWorkflow;
+    private _repositoryWorkflow?: RepositoryWorkflow;
 
-    private _containerRegistryPage?: ContainerRegistryPage;
-private _containerRegistryWorkflow?: ContainerRegistryWorkflow;
 
     constructor(page: Page) {
         this.page = page;
     }
+
 
     // =====================================================
     // LOGIN
@@ -46,12 +60,12 @@ private _containerRegistryWorkflow?: ContainerRegistryWorkflow;
     get loginPage(): LoginPage {
 
         if (!this._loginPage) {
-            this._loginPage =
-                new LoginPage(this.page);
+            this._loginPage = new LoginPage(this.page);
         }
 
         return this._loginPage;
     }
+
 
     // =====================================================
     // CLUSTER DASHBOARD
@@ -67,6 +81,7 @@ private _containerRegistryWorkflow?: ContainerRegistryWorkflow;
         return this._clusterDashboardPage;
     }
 
+
     // =====================================================
     // CLUSTER CREATION
     // =====================================================
@@ -80,6 +95,7 @@ private _containerRegistryWorkflow?: ContainerRegistryWorkflow;
 
         return this._clusterCreationPage;
     }
+
 
     // =====================================================
     // NAMESPACE CREATION
@@ -95,6 +111,7 @@ private _containerRegistryWorkflow?: ContainerRegistryWorkflow;
         return this._namespaceCreationPage;
     }
 
+
     // =====================================================
     // NODES PAGE
     // =====================================================
@@ -109,6 +126,7 @@ private _containerRegistryWorkflow?: ContainerRegistryWorkflow;
         return this._nodesPage;
     }
 
+
     // =====================================================
     // NODES WORKFLOW
     // =====================================================
@@ -117,13 +135,12 @@ private _containerRegistryWorkflow?: ContainerRegistryWorkflow;
 
         if (!this._nodesWorkflow) {
             this._nodesWorkflow =
-                new NodesWorkflow(
-                    this.nodesPage
-                );
+                new NodesWorkflow(this.nodesPage);
         }
 
         return this._nodesWorkflow;
     }
+
 
     // =====================================================
     // PODS PAGE
@@ -139,6 +156,7 @@ private _containerRegistryWorkflow?: ContainerRegistryWorkflow;
         return this._podsPage;
     }
 
+
     // =====================================================
     // PODS WORKFLOW
     // =====================================================
@@ -147,13 +165,12 @@ private _containerRegistryWorkflow?: ContainerRegistryWorkflow;
 
         if (!this._podsWorkflow) {
             this._podsWorkflow =
-                new PodsWorkflow(
-                    this.podsPage
-                );
+                new PodsWorkflow(this.podsPage);
         }
 
         return this._podsWorkflow;
     }
+
 
     // =====================================================
     // CLUSTER WORKFLOW
@@ -173,6 +190,7 @@ private _containerRegistryWorkflow?: ContainerRegistryWorkflow;
         return this._clusterWorkflow;
     }
 
+
     // =====================================================
     // NAMESPACE WORKFLOW
     // =====================================================
@@ -188,33 +206,68 @@ private _containerRegistryWorkflow?: ContainerRegistryWorkflow;
 
         return this._namespaceWorkflow;
     }
+
+
     // =====================================================
-// CONTAINER REGISTRY PAGE
-// =====================================================
+    // CONTAINER REGISTRY PAGE
+    // =====================================================
 
-get containerRegistryPage(): ContainerRegistryPage {
+    get containerRegistryPage(): ContainerRegistryPage {
 
-    if (!this._containerRegistryPage) {
-        this._containerRegistryPage =
-            new ContainerRegistryPage(this.page);
+        if (!this._containerRegistryPage) {
+            this._containerRegistryPage =
+                new ContainerRegistryPage(this.page);
+        }
+
+        return this._containerRegistryPage;
     }
 
-    return this._containerRegistryPage;
-}
-// =====================================================
-// CONTAINER REGISTRY WORKFLOW
-// =====================================================
 
-get containerRegistryWorkflow(): ContainerRegistryWorkflow {
+    // =====================================================
+    // CONTAINER REGISTRY WORKFLOW
+    // =====================================================
 
-    if (!this._containerRegistryWorkflow) {
-        this._containerRegistryWorkflow =
-            new ContainerRegistryWorkflow(
-                this.containerRegistryPage
-            );
+    get containerRegistryWorkflow(): ContainerRegistryWorkflow {
+
+        if (!this._containerRegistryWorkflow) {
+            this._containerRegistryWorkflow =
+                new ContainerRegistryWorkflow(
+                    this.containerRegistryPage
+                );
+        }
+
+        return this._containerRegistryWorkflow;
     }
 
-    return this._containerRegistryWorkflow;
-}
 
+    // =====================================================
+    // REPOSITORY PAGE
+    // =====================================================
+
+    get repositoryPage(): RepositoryPage {
+
+        if (!this._repositoryPage) {
+            this._repositoryPage =
+                new RepositoryPage(this.page);
+        }
+
+        return this._repositoryPage;
+    }
+
+
+    // =====================================================
+    // REPOSITORY WORKFLOW
+    // =====================================================
+
+    get repositoryWorkflow(): RepositoryWorkflow {
+
+        if (!this._repositoryWorkflow) {
+            this._repositoryWorkflow =
+                new RepositoryWorkflow(
+                    this.repositoryPage
+                );
+        }
+
+        return this._repositoryWorkflow;
+    }
 }

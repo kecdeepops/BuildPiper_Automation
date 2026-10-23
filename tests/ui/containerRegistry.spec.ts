@@ -5,7 +5,7 @@ test.setTimeout(150_000);
 test('Create Azure Registry and deploy Namespace', async ({ page }) => {
     const pages = new PageManager(page);
 
-    const registryName = `automation_azure_${Date.now()}`;
+    const registryName = `automation-azure-${Date.now()}`;
     const namespaceName = `automation-ns-${Date.now()}`;
 
     console.log('Registry name:', registryName);

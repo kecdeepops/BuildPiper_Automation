@@ -6,18 +6,39 @@ const authFile = 'playwright/.auth/user.json';
 
 setup('authenticate user', async ({ page }) => {
 
-    const loginPage = new LoginPage(page);
+  const loginPage = new LoginPage(page);
 
-    await loginPage.navigate('/login');
+  // Open login page
+  await loginPage.navigate('/login');
 
-    await loginPage.login(
-        config.username,
-        config.password
-    );
+  console.log('Opening URL:', page.url());
 
-    await expect(page).toHaveURL(/ClusterDashboard/);
+  // Login
+  await loginPage.login(
+    config.username,
+    config.password
+  );
 
-    await page.context().storageState({
-        path: authFile
-    });
+  // Verify login
+  await expect(page).toHaveURL(
+    /ClusterDashboard/,
+    {
+      timeout: 30000
+    }
+  );
+
+  console.log(
+    'Login successful:',
+    page.url()
+  );
+
+  // Save authenticated session
+  await page.context().storageState({
+    path: authFile
+  });
+
+  console.log(
+    'Authentication state saved:',
+    authFile
+  );
 });
