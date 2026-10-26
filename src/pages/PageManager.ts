@@ -8,6 +8,7 @@ import { NodesPage } from './NodesPage';
 import { PodsPage } from './PodsPage';
 import { ContainerRegistryPage } from './ContainerRegistryPage';
 import { RepositoryPage } from './RepositoryPage';
+import { ManageApplicationPage } from './ManageApplicationPage';
 
 import { PodsWorkflow } from '../workflows/infrastructure/PodsWorkflow';
 import { ClusterWorkflow } from '../workflows/infrastructure/ClusterWorkflow';
@@ -16,6 +17,7 @@ import { NodesWorkflow } from '../workflows/infrastructure/NodesWorkflow';
 
 import { ContainerRegistryWorkflow } from '../workflows/integration/ContainerRegistryWorkflow';
 import { RepositoryWorkflow } from '../workflows/integration/RepositoryWorkflow';
+import { ManageApplicationWorkflow } from '../workflows/ManageApplication/ManageApplicationWorkflow';
 
 
 export class PageManager {
@@ -34,6 +36,7 @@ export class PageManager {
     private _podsPage?: PodsPage;
     private _containerRegistryPage?: ContainerRegistryPage;
     private _repositoryPage?: RepositoryPage;
+    private _manageApplicationPage?: ManageApplicationPage;
 
 
     // =====================================================
@@ -46,6 +49,7 @@ export class PageManager {
     private _namespaceWorkflow?: NamespaceWorkflow;
     private _containerRegistryWorkflow?: ContainerRegistryWorkflow;
     private _repositoryWorkflow?: RepositoryWorkflow;
+    private _manageApplicationWorkflow?: ManageApplicationWorkflow;
 
 
     constructor(page: Page) {
@@ -269,5 +273,38 @@ export class PageManager {
         }
 
         return this._repositoryWorkflow;
+    }
+
+
+    // =====================================================
+    // MANAGE APPLICATION PAGE
+    // =====================================================
+
+    get manageApplicationPage(): ManageApplicationPage {
+
+        if (!this._manageApplicationPage) {
+            this._manageApplicationPage =
+                new ManageApplicationPage(this.page);
+        }
+
+        return this._manageApplicationPage;
+    }
+
+
+    // =====================================================
+    // MANAGE APPLICATION WORKFLOW
+    // =====================================================
+
+    get manageApplicationWorkflow(): ManageApplicationWorkflow {
+
+        if (!this._manageApplicationWorkflow) {
+            this._manageApplicationWorkflow =
+                new ManageApplicationWorkflow(
+                    this.clusterDashboardPage,
+                    this.manageApplicationPage
+                );
+        }
+
+        return this._manageApplicationWorkflow;
     }
 }

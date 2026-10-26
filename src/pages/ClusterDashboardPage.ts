@@ -484,4 +484,74 @@ async getFirstAvailableCluster(): Promise<{
     throw new Error('No cluster found on the current dashboard page');
 }
 
+ private manageApplicationMenu =
+        this.page.getByText(
+            'Manage Application',
+            {
+                exact: true
+            }
+        );
+
+    // =====================================================
+    // OPEN CLUSTER DASHBOARD
+    // =====================================================
+
+    async openClusterDashboard(): Promise<void> {
+
+        console.log(
+            'Opening Cluster Dashboard...'
+        );
+
+        await this.page.goto(
+            '/ClusterDashboard'
+        );
+
+        await expect(
+            this.page
+        ).toHaveURL(
+            /ClusterDashboard/,
+            {
+                timeout: 15_000
+            }
+        );
+
+        console.log(
+            `Cluster Dashboard opened: ${this.page.url()}`
+        );
+    }
+
+    // =====================================================
+    // OPEN MANAGE APPLICATION
+    // =====================================================
+
+    async openManageApplication(): Promise<void> {
+
+        console.log(
+            'Opening Manage Application...'
+        );
+
+        await expect(
+            this.manageApplicationMenu
+        ).toBeVisible({
+            timeout: 15_000
+        });
+
+        await this.manageApplicationMenu.click();
+
+        // Wait for Apps Summary page
+        await expect(
+            this.page.getByText(
+                'Apps Summary',
+                {
+                    exact: true
+                }
+            )
+        ).toBeVisible({
+            timeout: 15_000
+        });
+
+        console.log(
+            `Manage Application opened: ${this.page.url()}`
+        );
+    }
 }

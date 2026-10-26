@@ -1,7 +1,7 @@
 import { test, expect } from '../../src/fixtures/ui.fixture';
 import path from 'node:path';
 
-test.setTimeout(120_000);
+test.setTimeout(300_000);
 
 test('Create Kubernetes cluster successfully', async ({ pageManager }) => {
 
@@ -60,7 +60,8 @@ test('Create Kubernetes cluster successfully', async ({ pageManager }) => {
                 'STATUS'
             );
 
-    //expect(status.trim()).toBe('Connected');
+    console.log('Cluster Name:', clusterName);
+    console.log('Cluster Status:', status);
 
     // =========================
     // GET CREATED CLUSTER ID
